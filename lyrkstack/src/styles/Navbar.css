@@ -1,0 +1,33 @@
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: white;
+}
+  
+.navbar-icon{
+    float: left;
+}
+
+.navbar-icon a {
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+}
+
+.navbar-item {
+    float: right;
+}
+  
+.navbar-item a {
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+}
+  
+.navbar-item a:hover {
+    background-color: grey;
+}
