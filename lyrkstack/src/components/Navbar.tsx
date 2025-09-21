@@ -5,7 +5,7 @@ import { FaMusic } from "react-icons/fa";
 export default function Navbar() {
     return (
       <nav>
-          <ul>  
+          <ul className="navbar">  
                 <Link to ='/home'>                
                     <li className="navbar-icon"><a><FaMusic color='black'/></a></li>
                 </Link>
