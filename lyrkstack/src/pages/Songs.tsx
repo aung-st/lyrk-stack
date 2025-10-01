@@ -48,7 +48,7 @@ function Songs() {
     ]
     return (
         <>
-            <ul>
+            <ul className="song-list">
                 {songItems.map((item) => (
                     <li key={item.id}>
                         <Link to={`${item.id}`} state={{ from: { item } }}>
