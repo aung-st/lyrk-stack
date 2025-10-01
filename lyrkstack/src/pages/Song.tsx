@@ -20,21 +20,21 @@ function Song() {
     }
 
     return (
-        <>  
+        <>
             <div className="song-header">
                 <h1>
                     id: {songDetails.id}: title: {songDetails.title}
                 </h1>
             </div>
             <div className="song-wrapper">
-            <div className="lyric left">
+                <div className="lyric left">
                     <ul className="button-list">{buttonList}</ul>
-                    <h2>{songDetails.translation[0].lyrics}</h2>
-            </div>
-            <div className="lyric right">
+                    <h4>{songDetails.translation[0].lyrics}</h4>
+                </div>
+                <div className="lyric right">
                     <ul className="button-list">{buttonList}</ul>
-                    <h2>{songDetails.translation[0].lyrics}</h2>
-            </div>
+                    <h4>{songDetails.translation[0].lyrics}</h4>
+                </div>
             </div>
         </>
     )

@@ -1,6 +1,6 @@
 lint-staged:
-  stage: test
-  script:
-    - npm install eslint
-    - npm install prettier
-    - npm run eslint && npm run prettier
+    stage: test
+    script:
+        - npm install eslint
+        - npm install prettier
+        - npm run eslint && npm run prettier

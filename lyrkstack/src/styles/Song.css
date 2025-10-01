@@ -1,14 +1,17 @@
-.song-header{
+.song-header {
     text-align: center;
 }
-.button-list{
+.button-list {
     display: flex;
     list-style-type: none;
     overflow: hidden;
+    justify-content: left;
+    padding-left: 0;
 }
-.song-wrapper{
+.song-wrapper {
     display: flex;
     justify-content: center;
+    gap: 30rem;
 }
 .left .right {
     width: 50%;
