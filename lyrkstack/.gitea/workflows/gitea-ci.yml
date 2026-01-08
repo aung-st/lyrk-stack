@@ -1,0 +1,11 @@
+on: [push]
+
+jobs:
+    Format-And-Lint
+    runs-on: ubuntu-latest
+    steps:
+        - name: install 
+        - run: npm install eslint
+        - run: npm install prettier
+        - name: run
+        - run: npm run eslint && npm run prettier
