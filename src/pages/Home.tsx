@@ -10,7 +10,7 @@ function Home() {
     const [searchPerformed, setSearchPerformed] = useState(false); 
 
     const fetchData = async () => {
-    const response:any = await axios.get("http://localhost:3000");
+    const response:any = await axios.get("http://localhost:3000/api/data/songs");
         setSongs(response.data.songs)
         console.log(response.data.songs[0].song_id)
     };
@@ -21,14 +21,13 @@ function Home() {
 
     function handleSearchClick() {
         if (searchValue === "" || searchValue === "Type Something") {
-            return ;
+            return;
         }
-
 
         const searchFilter = songs.filter((item) => {
             if (searchValue === "") { return false; }
 
-            const title : string = item.song_title.toLowerCase(); // Explicitly specify the type here
+            const title : string = item.song_title.toLowerCase();
             if (title
                 .includes(searchValue.toLowerCase())){
                 return title;
@@ -37,10 +36,8 @@ function Home() {
             return false;
         }) 
         
-
         setSongs(searchFilter)
         setSearchPerformed(true)
-
 
     }
 
@@ -58,7 +55,7 @@ function Home() {
             </div>
             <div className="search-container">
                         <ul className="song-list">
-                            {songs.length > 0 ? (
+                            {songs.length > 0 && searchPerformed ? (
                             songs.map((item) => (
                                 <li key={item.song_id}>
                                     <Link to={`/songs/${item.song_id}`} state={{ from: { item } }}>
