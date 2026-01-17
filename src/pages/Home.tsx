@@ -1,15 +1,23 @@
 import "../styles/Home.css"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import * as data from "../data/data.json"
+import axios from 'axios';
 
 function Home() {
-
-    const songItems = data.songs
-
-    const [songs, setSongs] = useState<{ id: number; title: string }[]>([]);
+    
+    const [songs, setSongs] = useState<{ song_id: number; song_title: string, artist_id:number, album_id:number }[]>([]);
     const [searchValue, setSearchValue] = useState("Type Something")
     const [searchPerformed, setSearchPerformed] = useState(false); 
+
+    const fetchData = async () => {
+    const response:any = await axios.get("http://localhost:3000");
+        setSongs(response.data.songs)
+        console.log(response.data.songs[0].song_id)
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     function handleSearchClick() {
         if (searchValue === "" || searchValue === "Type Something") {
@@ -17,10 +25,10 @@ function Home() {
         }
 
 
-        const searchFilter = songItems.filter((item) => {
+        const searchFilter = songs.filter((item) => {
             if (searchValue === "") { return false; }
 
-            const title : string = item.title.toLowerCase(); // Explicitly specify the type here
+            const title : string = item.song_title.toLowerCase(); // Explicitly specify the type here
             if (title
                 .includes(searchValue.toLowerCase())){
                 return title;
@@ -52,9 +60,9 @@ function Home() {
                         <ul className="song-list">
                             {songs.length > 0 ? (
                             songs.map((item) => (
-                                <li key={item.id}>
-                                    <Link to={`/songs/${item.id}`} state={{ from: { item } }}>
-                                        {item.title}
+                                <li key={item.song_id}>
+                                    <Link to={`/songs/${item.song_id}`} state={{ from: { item } }}>
+                                        {item.song_title}
                                     </Link>
                                 </li>
                                 ))  
