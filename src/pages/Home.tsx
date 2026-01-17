@@ -1,52 +1,11 @@
 import "../styles/Home.css"
 import { useState } from "react"
 import { Link } from "react-router-dom"
+import * as data from "../data/data.json"
 
 function Home() {
-        const songItems = [
-        {
-            id: 1,
-            title: "song1",
-            translation: [
-                {
-                    language: "en",
-                    lyrics: "111sdfffffffffffffffffffffffffffffffff\nasddddddddd\nasdddddddd\nasddddddddd",
-                },
-                {
-                    language: "ne",
-                    lyrics: "222sdfffffffffffffffffffffffffffffffff\nasddddddddd\nasdddddddd\nasddddddddd",
-                },
-            ],
-        },
-        {
-            id: 2,
-            title: "song2",
-            translation: [
-                {
-                    language: "en",
-                    lyrics: "333sdfffffffffffffffffffffffffffffffff\nasddddddddd\nasdddddddd\nasddddddddd",
-                },
-                {
-                    language: "ne",
-                    lyrics: "444dfffffffffffffffffffffffffffffffff\nasddddddddd\nasdddddddd\nasddddddddd",
-                },
-            ],
-        },
-        {
-            id: 3,
-            title: "song3",
-            translation: [
-                {
-                    language: "en",
-                    lyrics: "555sdfffffffffffffffffffffffffffffffff\nasddddddddd\nasdddddddd\nasddddddddd",
-                },
-                {
-                    language: "ne",
-                    lyrics: "666sdfffffffffffffffffffffffffffffffff\nasddddddddd\nasdddddddd\nasddddddddd",
-                },
-            ],
-        },
-    ]
+
+    const songItems = data.songs
 
     const [songs, setSongs] = useState<{ id: number; title: string }[]>([]);
     const [searchValue, setSearchValue] = useState("Type Something")
