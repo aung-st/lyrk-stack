@@ -1,5 +1,6 @@
 {
-    "songs":[{
+    "songs": [
+        {
             "id": 1,
             "title": "song1",
             "artist": "artist1",
@@ -45,5 +46,6 @@
                     "lyrics": "666sdfffffffffffffffffffffffffffffffff\nasddddddddd\nasdddddddd\nasddddddddd"
                 }
             ]
-        }]
+        }
+    ]
 }
