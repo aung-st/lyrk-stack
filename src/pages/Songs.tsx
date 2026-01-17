@@ -51,7 +51,7 @@ function Songs() {
             <ul className="song-list">
                 {songItems.map((item) => (
                     <li key={item.id}>
-                        <Link to={`${item.id}`} state={{ from: { item } }}>
+                        <Link to={`/songs/${item.id}`} state={{ from: { item } }}>
                             {item.title}
                         </Link>
                     </li>

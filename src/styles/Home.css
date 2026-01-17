@@ -4,3 +4,15 @@ body {
     margin: 0;
     overflow: hidden;
 }
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+
+}
+
+/* .search-results {
+    justify-content: center;
+    text-align: center;
+} */
