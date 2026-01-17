@@ -9,11 +9,11 @@ function Songs() {
             translation: [
                 {
                     language: "en",
-                    lyrics: "1sdfffffffffffffffffffffffffffffffff\nasddddddddd\nasdddddddd\nasddddddddd",
+                    lyrics: "111sdfffffffffffffffffffffffffffffffff\nasddddddddd\nasdddddddd\nasddddddddd",
                 },
                 {
                     language: "ne",
-                    lyrics: "1sdfffffffffffffffffffffffffffffffff\nasddddddddd\nasdddddddd\nasddddddddd",
+                    lyrics: "222sdfffffffffffffffffffffffffffffffff\nasddddddddd\nasdddddddd\nasddddddddd",
                 },
             ],
         },
@@ -23,11 +23,11 @@ function Songs() {
             translation: [
                 {
                     language: "en",
-                    lyrics: "2sdfffffffffffffffffffffffffffffffff\nasddddddddd\nasdddddddd\nasddddddddd",
+                    lyrics: "333sdfffffffffffffffffffffffffffffffff\nasddddddddd\nasdddddddd\nasddddddddd",
                 },
                 {
                     language: "ne",
-                    lyrics: "2sdfffffffffffffffffffffffffffffffff\nasddddddddd\nasdddddddd\nasddddddddd",
+                    lyrics: "444dfffffffffffffffffffffffffffffffff\nasddddddddd\nasdddddddd\nasddddddddd",
                 },
             ],
         },
@@ -37,11 +37,11 @@ function Songs() {
             translation: [
                 {
                     language: "en",
-                    lyrics: "3sdfffffffffffffffffffffffffffffffff\nasddddddddd\nasdddddddd\nasddddddddd",
+                    lyrics: "555sdfffffffffffffffffffffffffffffffff\nasddddddddd\nasdddddddd\nasddddddddd",
                 },
                 {
                     language: "ne",
-                    lyrics: "3sdfffffffffffffffffffffffffffffffff\nasddddddddd\nasdddddddd\nasddddddddd",
+                    lyrics: "666sdfffffffffffffffffffffffffffffffff\nasddddddddd\nasdddddddd\nasddddddddd",
                 },
             ],
         },
