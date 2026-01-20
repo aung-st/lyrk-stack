@@ -1,5 +1,4 @@
+#!/usr/bin/env sh
 . "$(dirname "$0")/_/husky.sh"
 
-echo linting and formatting staged changes && lint-staged
-
-exit 1
+npx lint-staged
