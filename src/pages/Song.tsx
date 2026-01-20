@@ -1,14 +1,39 @@
 import { useLocation } from "react-router-dom"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import axios from "axios"
 import "../styles/Song.css"
 
 function Song() {
+    type Song = {
+        song_id: number
+        song_title: string
+        lyric_id: number
+        lyrics_text: string
+        language: string
+        is_translated: boolean
+    }
+
+    type Songs = {
+        songLyrics: Song[]
+    }
+
     const location = useLocation()
     const { from } = location.state
+    const songId = from.item.song_id
+    console.log(songId)
+    const [songs, setSongs] = useState<Song[]>([])
 
-    const songDetails = from.item
+    const fetchData = async () => {
+        const response = await axios.get<Songs>(
+            `http://localhost:3000/api/data/songLyrics/${songId}`,
+        )
+        setSongs(response.data.songLyrics)
+    }
 
-    // State to hold the selected translation index
+    useEffect(() => {
+        fetchData()
+    }, [])
+
     const [selectedIndexLeft, setSelectedIndexLeft] = useState(0)
 
     // Function to handle button clicks
@@ -27,44 +52,38 @@ function Song() {
     }
 
     // Create a button for every language available
-    const buttonListLeft = songDetails.translation.map(
-        (translation: any, index: any) => (
-            <li key={index}>
-                <button onClick={() => handleButtonClickLeft(index)}>
-                    {translation.language}
-                </button>
-            </li>
-        ),
-    )
+    const buttonListLeft = songs.map((item: Song, index: any) => (
+        <li key={index}>
+            <button onClick={() => handleButtonClickLeft(index)}>
+                {item.language}
+            </button>
+        </li>
+    ))
 
     // Create a button for every language available
-    const buttonListRight = songDetails.translation.map(
-        (translation: any, index: any) => (
-            <li key={index}>
-                <button onClick={() => handleButtonClickRight(index)}>
-                    {translation.language}
-                </button>
-            </li>
-        ),
-    )
+    const buttonListRight = songs.map((item: Song, index: any) => (
+        <li key={index}>
+            <button onClick={() => handleButtonClickRight(index)}>
+                {item.language}
+            </button>
+        </li>
+    ))
 
     return (
         <>
             <div className="song-header">
-                <h1>
-                    id: {songDetails.id}: title: {songDetails.title}
-                </h1>
+                <h1>{songs[0]?.song_title}</h1>
             </div>
             <div className="song-wrapper">
                 <div className="lyric left">
                     <ul className="button-list">{buttonListLeft}</ul>
                     {/* Display the selected translation */}
-                    <h4>{songDetails.translation[selectedIndexLeft]?.lyrics}</h4>
+                    <h4>{songs[selectedIndexLeft]?.lyrics_text}</h4>
                 </div>
                 <div className="lyric right">
                     <ul className="button-list">{buttonListRight}</ul>
                     {/* Display the selected translation */}
-                    <h4>{songDetails.translation[selectedIndexRight].lyrics}</h4>
+                    <h4>{songs[selectedIndexRight]?.lyrics_text}</h4>
                 </div>
             </div>
         </>

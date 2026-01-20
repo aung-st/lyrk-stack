@@ -64,6 +64,34 @@ app.get("/api/data/albums", async (req, res) => {
     }
 })
 
+app.get("/api/data/songLyrics", async (req, res) => {
+    try {
+        const db = await openDatabase()
+        const songLyricsList = await db.all(
+            "SELECT s.song_id, s.song_title, l.lyric_id, l.lyrics_text, l.language, l.is_translated FROM songs s INNER JOIN lyrics l on s.song_id=l.song_id;",
+        )
+        res.json({ songLyrics: songLyricsList })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ error: "Database query failed" })
+    }
+})
+
+app.get("/api/data/songLyrics/:song_id", async (req, res) => {
+    const songId = req.params.song_id
+    try {
+        const db = await openDatabase()
+        const songLyricsList = await db.all(
+            "SELECT s.song_id, s.song_title, l.lyric_id, l.lyrics_text, l.language, l.is_translated FROM songs s INNER JOIN lyrics l on s.song_id=l.song_id WHERE s.song_id=?;",
+            [songId],
+        )
+        res.json({ songLyrics: songLyricsList })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ error: "Database query failed" })
+    }
+})
+
 app.listen(port, () => {
     console.log(`Listening on port ${port}`)
 })

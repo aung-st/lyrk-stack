@@ -4,47 +4,60 @@ import { Link } from "react-router-dom"
 import axios from "axios"
 
 function Home() {
-    const [songs, setSongs] = useState<
-        {
-            song_id: number
-            song_title: string
-            artist_id: number
-            album_id: number
-        }[]
-    >([])
-    const [searchValue, setSearchValue] = useState("Type Something")
-    const [searchPerformed, setSearchPerformed] = useState(false)
+    type Song = {
+        song_id: number
+        song_title: string
+        lyric_id: number
+        lyrics_text: string
+        language: string
+        is_translated: boolean
+    }
+
+    type Songs = {
+        songs: Song[]
+    }
+
+    const placeholder: string = "Search for a song"
+    const [songs, setSongs] = useState<Song[]>([])
+    const [searchValue, setSearchValue] = useState(placeholder)
 
     const fetchData = async () => {
-        const response: any = await axios.get("http://localhost:3000/api/data/songs")
+        const response = await axios.get<Songs>(
+            "http://localhost:3000/api/data/songs",
+        )
         setSongs(response.data.songs)
-        console.log(response.data.songs[0].song_id)
     }
 
     useEffect(() => {
         fetchData()
-    }, [])
+    })
 
-    function handleSearchClick() {
-        if (searchValue === "" || searchValue === "Type Something") {
-            return
+    const searchResults = songs.filter((item) => {
+        if (searchValue === "" || searchValue === placeholder) {
+            return false
         }
 
-        const searchFilter = songs.filter((item) => {
-            if (searchValue === "") {
-                return false
-            }
+        const title: string = item.song_title.toLowerCase()
+        if (title[0].includes(searchValue.toLowerCase())) {
+            return title
+        }
+    })
 
-            const title: string = item.song_title.toLowerCase()
-            if (title.includes(searchValue.toLowerCase())) {
-                return title
-            }
-
-            return false
-        })
-
-        setSongs(searchFilter)
-        setSearchPerformed(true)
+    // render clickable links based on song titles that appear after searching
+    const renderSearchResults = () => {
+        if (searchResults.length > 0) {
+            return searchResults.map((item) => (
+                <li key={item.song_id}>
+                    <Link to={`/songs/${item.song_id}`} state={{ from: { item } }}>
+                        {item.song_title}
+                    </Link>
+                </li>
+            ))
+        } else if (searchValue !== placeholder && searchValue !== "") {
+            return <li>No results found</li>
+        } else {
+            return null
+        }
     }
 
     return (
@@ -57,23 +70,9 @@ function Home() {
                     name="search"
                     placeholder={searchValue}
                 ></input>
-                <button onClick={handleSearchClick}>Search</button>
             </div>
             <div className="search-container">
-                <ul className="song-list">
-                    {songs.length > 0 && searchPerformed
-                        ? songs.map((item) => (
-                              <li key={item.song_id}>
-                                  <Link
-                                      to={`/songs/${item.song_id}`}
-                                      state={{ from: { item } }}
-                                  >
-                                      {item.song_title}
-                                  </Link>
-                              </li>
-                          ))
-                        : searchPerformed && <li>No results found</li>}
-                </ul>
+                <ul className="song-list">{renderSearchResults()}</ul>
             </div>
         </>
     )

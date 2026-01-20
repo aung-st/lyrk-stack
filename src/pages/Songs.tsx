@@ -1,16 +1,45 @@
 import "../styles/Songs.css"
+import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import * as data from "../data/data.json"
+import axios from "axios"
 
 function Songs() {
-    const songItems = data.songs
+    type Song = {
+        song_id: number
+        song_title: string
+        lyric_id: number
+        lyrics_text: string
+        language: string
+        is_translated: boolean
+    }
+
+    type Songs = {
+        songs: Song[]
+    }
+    const [songs, setSongs] = useState<Song[]>([])
+
+    const fetchData = async () => {
+        const response = await axios.get<Songs>(
+            "http://localhost:3000/api/data/songs",
+        )
+
+        setSongs(response.data.songs)
+    }
+
+    useEffect(() => {
+        fetchData()
+    }, [])
+
     return (
         <>
             <ul className="song-list">
-                {songItems.map((item) => (
-                    <li key={item.id}>
-                        <Link to={`/songs/${item.id}`} state={{ from: { item } }}>
-                            {item.title}
+                {songs.map((item: Song) => (
+                    <li key={item.song_id}>
+                        <Link
+                            to={`/songs/${item.song_id}`}
+                            state={{ from: { item } }}
+                        >
+                            {item.song_title}
                         </Link>
                     </li>
                 ))}
