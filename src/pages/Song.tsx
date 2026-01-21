@@ -76,12 +76,24 @@ function Song() {
             </div>
             <div className="song-wrapper">
                 <div className="lyric left">
-                    {/* Display the selected translation */}
-                    <h4>{songs[selectedIndexLeft]?.lyrics_text}</h4>
+                    {songs[selectedIndexLeft]?.lyrics_text
+                        .split("\n")
+                        .map((line, index) => (
+                            <span key={index}>
+                                {line}
+                                <br />
+                            </span>
+                        ))}
                 </div>
                 <div className="lyric right">
-                    {/* Display the selected translation */}
-                    <h4>{songs[selectedIndexRight]?.lyrics_text}</h4>
+                    {songs[selectedIndexRight]?.lyrics_text
+                        .split("\n")
+                        .map((line, index) => (
+                            <span key={index}>
+                                {line}
+                                <br />
+                            </span>
+                        ))}
                 </div>
             </div>
         </>

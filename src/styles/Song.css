@@ -1,5 +1,9 @@
+body {
+    overflow-y: scroll;
+}
+
 h1 {
-    padding-left: 1.2em;
+    padding-right: 50vw;
 }
 
 a {
@@ -12,8 +16,8 @@ a {
 .song-header {
     text-align: center;
     text-decoration-line: underline;
-    text-decoration-thickness: 0.5em;
-    text-underline-offset: 0.5rem;
+    text-decoration-thickness: 0.4em;
+    text-underline-offset: 0.6rem;
 }
 .button-wrapper {
     width: 100%;
@@ -30,15 +34,16 @@ a {
 }
 
 .button-list.left {
-    padding-left: 10vw;
+    padding-left: 20vw;
 }
 
 .button-list.right {
-    padding-right: 26vw;
+    padding-right: 32.7vw;
 }
 .song-wrapper {
     display: flex;
-    gap: 30rem;
+    gap: 15rem;
+    padding-bottom: 5rem;
 }
 
 .lyric {
@@ -46,8 +51,12 @@ a {
 }
 
 .lyric.left {
-    padding-left: 10vw;
+    padding-left: 20vw;
 }
 .lyric.right {
-    padding-right: 10vw;
+    padding-right: 20vw;
+}
+
+span {
+    font-size: 1.5rem;
 }
