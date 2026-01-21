@@ -1,0 +1,10 @@
+services:
+    playwright:
+        network_mode: "host"
+        build:
+            dockerfile: ./dockerfile
+        volumes:
+            - ./playwright-report:/app/playwright-report
+            - ./test-results:/app/test-results
+        environment:
+            - BASE_URL=http://localhost:5173 # Define the base URL for tests
