@@ -8,26 +8,18 @@ export default function Navbar() {
             <ul className="navbar">
                 <Link to="/home">
                     <li className="navbar-icon">
-                        <a>
-                            <FaMusic color="black" />
-                        </a>
+                        <FaMusic color="black" />
                     </li>
                 </Link>
                 <Link to="/about">
-                    <li className="navbar-item">
-                        <a>About</a>
-                    </li>
+                    <li className="navbar-item">About</li>
                 </Link>
 
                 <Link to="/songs">
-                    <li className="navbar-item">
-                        <a>Songs</a>
-                    </li>
+                    <li className="navbar-item">Songs</li>
                 </Link>
                 <Link to="/home">
-                    <li className="navbar-item">
-                        <a>Home</a>
-                    </li>
+                    <li className="navbar-item">Home</li>
                 </Link>
             </ul>
         </nav>

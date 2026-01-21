@@ -30,7 +30,7 @@ function Home() {
 
     useEffect(() => {
         fetchData()
-    })
+    }, [])
 
     const searchResults = songs.filter((item) => {
         if (searchValue === "" || searchValue === placeholder) {
@@ -38,27 +38,10 @@ function Home() {
         }
 
         const title: string = item.song_title.toLowerCase()
-        if (title[0].includes(searchValue.toLowerCase())) {
+        if (title.includes(searchValue.toLowerCase())) {
             return title
         }
     })
-
-    // render clickable links based on song titles that appear after searching
-    const renderSearchResults = () => {
-        if (searchResults.length > 0) {
-            return searchResults.map((item) => (
-                <li key={item.song_id}>
-                    <Link to={`/songs/${item.song_id}`} state={{ from: { item } }}>
-                        {item.song_title}
-                    </Link>
-                </li>
-            ))
-        } else if (searchValue !== placeholder && searchValue !== "") {
-            return <li>No results found</li>
-        } else {
-            return null
-        }
-    }
 
     return (
         <>
@@ -72,7 +55,22 @@ function Home() {
                 ></input>
             </div>
             <div className="search-container">
-                <ul className="song-list">{renderSearchResults()}</ul>
+                <ul className="song-list">
+                    {searchResults.length > 0 ? (
+                        searchResults.map((item) => (
+                            <li key={item.song_id}>
+                                <Link
+                                    to={`/songs/${item.song_id}`}
+                                    state={{ from: { item } }}
+                                >
+                                    {item.song_title}
+                                </Link>
+                            </li>
+                        ))
+                    ) : searchValue !== placeholder && searchValue !== "" ? (
+                        <li>No results found</li>
+                    ) : null}
+                </ul>
             </div>
         </>
     )

@@ -8,9 +8,6 @@
 
 .navbar-icon {
     float: left;
-}
-
-.navbar-icon a {
     display: block;
     color: black;
     text-align: center;
@@ -19,15 +16,12 @@
 
 .navbar-item {
     float: right;
-}
-
-.navbar-item a {
     display: block;
     color: black;
     text-align: center;
     padding: 14px 16px;
 }
 
-.navbar-item a:hover {
+.navbar-item:hover {
     background-color: grey;
 }
