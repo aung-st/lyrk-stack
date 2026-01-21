@@ -1,18 +1,39 @@
 .song-header {
     text-align: center;
 }
+.button-wrapper {
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+    align-items: flex-start;
+}
+
 .button-list {
     display: flex;
     list-style-type: none;
     overflow: hidden;
     justify-content: left;
-    padding-left: 0;
+}
+
+.button-list.left {
+    padding-left: 10rem;
+}
+
+.button-list.right {
+    padding-right: 36rem;
 }
 .song-wrapper {
     display: flex;
-    justify-content: center;
     gap: 30rem;
 }
-.left .right {
-    width: 50%;
+
+.lyric {
+    flex: 1;
+}
+
+.lyric.left {
+    padding-left: 10rem;
+}
+.lyric.right {
+    padding-right: 10rem;
 }

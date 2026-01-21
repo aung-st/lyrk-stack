@@ -70,14 +70,16 @@ function Song() {
             <div className="song-header">
                 <h1>{songs[0]?.song_title}</h1>
             </div>
+            <div className="button-wrapper">
+                <ul className="button-list left">{buttonListLeft}</ul>
+                <ul className="button-list right">{buttonListRight}</ul>
+            </div>
             <div className="song-wrapper">
                 <div className="lyric left">
-                    <ul className="button-list">{buttonListLeft}</ul>
                     {/* Display the selected translation */}
                     <h4>{songs[selectedIndexLeft]?.lyrics_text}</h4>
                 </div>
                 <div className="lyric right">
-                    <ul className="button-list">{buttonListRight}</ul>
                     {/* Display the selected translation */}
                     <h4>{songs[selectedIndexRight]?.lyrics_text}</h4>
                 </div>
