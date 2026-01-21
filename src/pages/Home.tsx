@@ -40,7 +40,7 @@ function Home() {
         }
 
         const title: string = item.song_title.toLowerCase()
-        if (title.includes(searchValue.toLowerCase())) {
+        if (title.startsWith(searchValue.toLowerCase())) {
             return title
         }
     })
