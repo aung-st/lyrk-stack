@@ -1,5 +1,5 @@
 import "../styles/Home.css"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Link } from "react-router-dom"
 import axios from "axios"
 
@@ -20,6 +20,7 @@ function Home() {
     const placeholder: string = "Search for a song"
     const [songs, setSongs] = useState<Song[]>([])
     const [searchValue, setSearchValue] = useState(placeholder)
+    const [dataFetched, setDataFetched] = useState(false)
 
     const fetchData = async () => {
         const response = await axios.get<Songs>(
@@ -28,9 +29,10 @@ function Home() {
         setSongs(response.data.songs)
     }
 
-    useEffect(() => {
+    if (!dataFetched) {
+        setDataFetched(true)
         fetchData()
-    }, [])
+    }
 
     const searchResults = songs.filter((item) => {
         if (searchValue === "" || searchValue === placeholder) {

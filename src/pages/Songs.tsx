@@ -1,5 +1,5 @@
 import "../styles/Songs.css"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Link } from "react-router-dom"
 import axios from "axios"
 
@@ -17,6 +17,7 @@ function Songs() {
         songs: Song[]
     }
     const [songs, setSongs] = useState<Song[]>([])
+    const [dataFetched, setDataFetched] = useState(false)
 
     const fetchData = async () => {
         const response = await axios.get<Songs>(
@@ -26,9 +27,10 @@ function Songs() {
         setSongs(response.data.songs)
     }
 
-    useEffect(() => {
+    if (!dataFetched) {
+        setDataFetched(true)
         fetchData()
-    }, [])
+    }
 
     return (
         <>
