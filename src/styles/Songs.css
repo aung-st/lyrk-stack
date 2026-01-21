@@ -1,4 +1,9 @@
+#song-header {
+    padding-left: 1.7em;
+}
+
 .song-list {
     list-style-type: none;
+    line-height: 2.5em;
     overflow: hidden;
 }
