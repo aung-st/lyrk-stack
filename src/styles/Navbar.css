@@ -3,25 +3,25 @@
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: white;
 }
 
 .navbar-icon {
     float: left;
     display: block;
-    color: black;
     text-align: center;
-    padding: 14px 16px;
+    padding: 1em;
+    margin-left: 1em;
+}
+
+.icon {
+    fill: #1ba098;
+    transform: scale(1.5);
 }
 
 .navbar-item {
     float: right;
     display: block;
-    color: black;
+    color: #1ba098;
     text-align: center;
-    padding: 14px 16px;
-}
-
-.navbar-item:hover {
-    background-color: grey;
+    padding: 0;
 }

@@ -34,6 +34,7 @@ function Songs() {
 
     return (
         <>
+            <h1>Songs</h1>
             <ul className="song-list">
                 {songs.map((item: Song) => (
                     <li key={item.song_id}>

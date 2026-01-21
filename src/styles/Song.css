@@ -1,5 +1,19 @@
+h1 {
+    padding-left: 1.2em;
+}
+
+a {
+    font-size: 1em;
+    font-weight: 700;
+    color: #1ba098;
+    padding: 1rem 1rem;
+    margin-right: 0.1vw;
+}
 .song-header {
     text-align: center;
+    text-decoration-line: underline;
+    text-decoration-thickness: 0.5em;
+    text-underline-offset: 0.5rem;
 }
 .button-wrapper {
     width: 100%;
@@ -16,11 +30,11 @@
 }
 
 .button-list.left {
-    padding-left: 10rem;
+    padding-left: 10vw;
 }
 
 .button-list.right {
-    padding-right: 36rem;
+    padding-right: 26vw;
 }
 .song-wrapper {
     display: flex;
@@ -32,8 +46,8 @@
 }
 
 .lyric.left {
-    padding-left: 10rem;
+    padding-left: 10vw;
 }
 .lyric.right {
-    padding-right: 10rem;
+    padding-right: 10vw;
 }

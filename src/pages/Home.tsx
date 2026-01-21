@@ -60,7 +60,7 @@ function Home() {
                 <ul className="song-list">
                     {searchResults.length > 0 ? (
                         searchResults.map((item) => (
-                            <li key={item.song_id}>
+                            <li className="results" key={item.song_id}>
                                 <Link
                                     to={`/songs/${item.song_id}`}
                                     state={{ from: { item } }}
@@ -70,7 +70,7 @@ function Home() {
                             </li>
                         ))
                     ) : searchValue !== placeholder && searchValue !== "" ? (
-                        <li>No results found</li>
+                        <li className="results">No results found</li>
                     ) : null}
                 </ul>
             </div>
