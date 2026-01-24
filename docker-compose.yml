@@ -1,10 +1,34 @@
+networks:
+    lyrk-stack-network:
+
 services:
     playwright:
         network_mode: "host"
         build:
-            dockerfile: ./dockerfile
+            dockerfile: ./docker/test/dockerfile
         volumes:
             - ./playwright-report:/app/playwright-report
             - ./test-results:/app/test-results
         environment:
-            - BASE_URL=http://localhost:5173 # Define the base URL for tests
+            - BASE_URL=http://localhost:5173
+    lyrk-stack-frontend:
+        networks:
+            - lyrk-stack-network
+        build:
+            dockerfile: ./docker/frontend/dockerfile
+        environment:
+            - BASE_URL=http://localhost:5173
+            - PORT=5173
+        ports:
+            - "5173:5173"
+    lyrk-stack-backend:
+        networks:
+            - lyrk-stack-network
+        build:
+            dockerfile: ./docker/backend/dockerfile
+        environment:
+            - BASE_URL=http://localhost:3001
+        ports:
+            - "3001:3001"
+        volumes:
+            - ./api/songbook.db:/app/api/songbook.db

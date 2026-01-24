@@ -4,7 +4,7 @@ import sqlite3 from "sqlite3"
 import { open } from "sqlite"
 
 const app = express()
-const port = 3000
+const port = 3001
 
 async function openDatabase() {
     return open({

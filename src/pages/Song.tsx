@@ -27,7 +27,7 @@ function Song() {
 
     const fetchData = async () => {
         const response = await axios.get<Songs>(
-            `http://localhost:3000/api/data/songLyrics/${songId}`,
+            `http://localhost:3001/api/data/songLyrics/${songId}`,
         )
         setSongs(response.data.songLyrics)
     }

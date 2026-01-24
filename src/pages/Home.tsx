@@ -24,7 +24,7 @@ function Home() {
 
     const fetchData = async () => {
         const response = await axios.get<Songs>(
-            "http://localhost:3000/api/data/songs",
+            "http://localhost:3001/api/data/songs",
         )
         setSongs(response.data.songs)
     }
