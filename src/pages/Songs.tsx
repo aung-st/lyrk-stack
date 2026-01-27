@@ -3,6 +3,9 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import axios from "axios"
 
+const serverBaseURL: string = import.meta.env.VITE_SERVER_BASE_URL!
+const songsURL: string = import.meta.env.VITE_SONGS_URL!
+
 function Songs() {
     type Song = {
         song_id: number
@@ -20,9 +23,7 @@ function Songs() {
     const [dataFetched, setDataFetched] = useState(false)
 
     const fetchData = async () => {
-        const response = await axios.get<Songs>(
-            "http://localhost:3001/api/data/songs",
-        )
+        const response = await axios.get<Songs>(`${serverBaseURL}${songsURL}`)
 
         setSongs(response.data.songs)
     }

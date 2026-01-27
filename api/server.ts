@@ -2,6 +2,13 @@ import express from "express"
 import cors from "cors"
 import sqlite3 from "sqlite3"
 import { open } from "sqlite"
+import { config } from "dotenv"
+
+config()
+
+const songsURL: string = process.env.VITE_SONGS_URL!
+const songsLyricsURL: string = process.env.VITE_SONG_LYRICS_URL!
+const baseURL: string = process.env.VITE_CLIENT_BASE_URL!
 
 const app = express()
 const port = 3001
@@ -15,12 +22,12 @@ async function openDatabase() {
 
 app.use(
     cors({
-        origin: ["http://localhost:5173"],
+        origin: [baseURL],
         methods: ["GET", "POST"],
     }),
 )
 
-app.get("/api/data/songs", async (req, res) => {
+app.get(songsURL, async (req, res) => {
     try {
         const db = await openDatabase()
         const songsList = await db.all("SELECT * FROM songs")
@@ -31,40 +38,7 @@ app.get("/api/data/songs", async (req, res) => {
     }
 })
 
-app.get("/api/data/lyrics", async (req, res) => {
-    try {
-        const db = await openDatabase()
-        const lyricsList = await db.all("SELECT * FROM lyrics")
-        res.json({ lyrics: lyricsList })
-    } catch (error) {
-        console.error(error)
-        res.status(500).json({ error: "Database query failed" })
-    }
-})
-
-app.get("/api/data/artists", async (req, res) => {
-    try {
-        const db = await openDatabase()
-        const artistsList = await db.all("SELECT * FROM artists")
-        res.json({ artists: artistsList })
-    } catch (error) {
-        console.error(error)
-        res.status(500).json({ error: "Database query failed" })
-    }
-})
-
-app.get("/api/data/albums", async (req, res) => {
-    try {
-        const db = await openDatabase()
-        const albumsList = await db.all("SELECT * FROM albums")
-        res.json({ albums: albumsList })
-    } catch (error) {
-        console.error(error)
-        res.status(500).json({ error: "Database query failed" })
-    }
-})
-
-app.get("/api/data/songLyrics", async (req, res) => {
+app.get(songsLyricsURL, async (req, res) => {
     try {
         const db = await openDatabase()
         const songLyricsList = await db.all(
@@ -77,7 +51,7 @@ app.get("/api/data/songLyrics", async (req, res) => {
     }
 })
 
-app.get("/api/data/songLyrics/:song_id", async (req, res) => {
+app.get(`${songsLyricsURL}/:song_id`, async (req, res) => {
     const songId = req.params.song_id
     try {
         const db = await openDatabase()

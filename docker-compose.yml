@@ -3,21 +3,23 @@ networks:
 
 services:
     playwright:
-        network_mode: "host"
+        network_mode: ${NETWORK_MODE}
         build:
             dockerfile: ./docker/test/dockerfile
         volumes:
             - ./playwright-report:/app/playwright-report
             - ./test-results:/app/test-results
         environment:
-            - BASE_URL=http://localhost:5173
+            - VITE_CLIENT_BASE_URL=${VITE_CLIENT_BASE_URL}
     lyrk-stack-frontend:
         networks:
             - lyrk-stack-network
         build:
             dockerfile: ./docker/frontend/dockerfile
         environment:
-            - BASE_URL=http://localhost:5173
+            - VITE_CLIENT_BASE_URL=${VITE_CLIENT_BASE_URL}
+            - VITE_SONGS_URL=${VITE_SONGS_URL}
+            - VITE_SONG_LYRICS_URL=${VITE_SONG_LYRICS}
             - PORT=5173
         ports:
             - "5173:5173"
@@ -27,7 +29,7 @@ services:
         build:
             dockerfile: ./docker/backend/dockerfile
         environment:
-            - BASE_URL=http://localhost:3001
+            - VITE_SERVER_BASE_URL=${VITE_SERVER_BASE_URL}
         ports:
             - "3001:3001"
         volumes:

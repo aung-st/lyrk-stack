@@ -3,6 +3,9 @@ import { useState } from "react"
 import axios from "axios"
 import "../styles/Song.css"
 
+const serverBaseURL: string = import.meta.env.VITE_SERVER_BASE_URL!
+const songsLyricsURL: string = import.meta.env.VITE_SONG_LYRICS_URL!
+
 function Song() {
     type Song = {
         song_id: number
@@ -27,7 +30,7 @@ function Song() {
 
     const fetchData = async () => {
         const response = await axios.get<Songs>(
-            `http://localhost:3001/api/data/songLyrics/${songId}`,
+            `${serverBaseURL}${songsLyricsURL}/${songId}`,
         )
         setSongs(response.data.songLyrics)
     }
