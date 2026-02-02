@@ -6,17 +6,12 @@ import axios from "axios"
 const serverBaseURL: string = import.meta.env.VITE_SERVER_BASE_URL!
 const songsURL: string = import.meta.env.VITE_SONGS_URL!
 
-console.log("test")
-console.log(`${serverBaseURL}${songsURL}`)
-
 function Home() {
     type Song = {
         song_id: number
         song_title: string
-        lyric_id: number
-        lyrics_text: string
-        language: string
-        is_translated: boolean
+        artist_id: number
+        artist_name: string
     }
 
     type Songs = {
@@ -61,9 +56,13 @@ function Home() {
                 ></input>
             </div>
             <div className="search-container">
-                <ul className="song-list">
-                    {searchResults.length > 0 ? (
-                        searchResults.map((item) => (
+                {searchResults.length > 0 ? (
+                    <ul className="song-list">
+                        <li className="result-header">
+                            <span>Song</span>
+                            <span>Artist</span>
+                        </li>
+                        {searchResults.map((item) => (
                             <li className="results" key={item.song_id}>
                                 <Link
                                     to={`/songs/${item.song_id}`}
@@ -71,12 +70,21 @@ function Home() {
                                 >
                                     {item.song_title}
                                 </Link>
+                                <Link
+                                    to={`/artists/${item.artist_id}`}
+                                    state={{ from: { item } }}
+                                >
+                                    {item.artist_name}
+                                </Link>
                             </li>
-                        ))
-                    ) : searchValue !== placeholder && searchValue !== "" ? (
-                        <li className="results">No results found</li>
-                    ) : null}
-                </ul>
+                        ))}
+                    </ul>
+                ) : (
+                    searchValue !== placeholder &&
+                    searchValue !== "" && (
+                        <div className="no-results">No results found</div>
+                    )
+                )}
             </div>
         </>
     )

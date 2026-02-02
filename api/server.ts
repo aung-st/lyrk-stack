@@ -30,7 +30,9 @@ app.use(
 app.get(songsURL, async (req, res) => {
     try {
         const db = await openDatabase()
-        const songsList = await db.all("SELECT * FROM songs")
+        const songsList = await db.all(
+            "SELECT s.song_id, s.song_title, s.artist_id, a.artist_name FROM songs s INNER JOIN artists a on s.artist_id=a.artist_id;",
+        )
         res.json({ songs: songsList })
     } catch (error) {
         console.error(error)
