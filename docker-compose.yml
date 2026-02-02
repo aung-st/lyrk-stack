@@ -19,7 +19,7 @@ services:
         environment:
             - VITE_CLIENT_BASE_URL=${VITE_CLIENT_BASE_URL}
             - VITE_SONGS_URL=${VITE_SONGS_URL}
-            - VITE_SONG_LYRICS_URL=${VITE_SONG_LYRICS}
+            - VITE_SONG_LYRICS_URL=${VITE_SONG_LYRICS_URL}
             - PORT=5173
         ports:
             - "5173:5173"
