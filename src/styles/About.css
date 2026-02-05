@@ -1,0 +1,26 @@
+.about-container {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    margin-right: 30vw;
+    margin-left: 30vw;
+}
+
+.about-container button {
+    margin-left: 14vw;
+    margin-right: 14vw;
+}
+
+.about-container ul {
+    padding-left: 0;
+    margin: 0;
+}
+
+.about-container li {
+    text-align: left;
+}
+
+.list-wrapper {
+    display: inline-block;
+}
