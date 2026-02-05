@@ -2,7 +2,7 @@ body {
     overflow-y: scroll;
 }
 
-h1 {
+.song-header h1 {
     padding-right: 50vw;
 }
 
