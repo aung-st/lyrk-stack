@@ -7,37 +7,24 @@ const serverBaseURL: string = import.meta.env.VITE_SERVER_BASE_URL!
 const songsLyricsURL: string = import.meta.env.VITE_SONG_LYRICS_URL!
 
 function Song() {
-    type Song = {
-        song_id: number
-        song_title: string
-        lyric_id: number
-        lyrics_text: string
-        language: string
-        is_translated: boolean
-    }
-
-    type Songs = {
-        songLyrics: Song[]
-    }
-
     const location = useLocation()
     const { from } = location.state
     const songId = from.item.song_id
-    const [songs, setSongs] = useState<Song[]>([])
-    const [dataFetched, setDataFetched] = useState(false)
+    const [songs, setSongs] = useState<LyricsBySong[]>([])
+    const [songLyricsDataFetched, setSongLyricsDataFetched] = useState(false)
     const [selectedIndexLeft, setSelectedIndexLeft] = useState(0)
     const [selectedIndexRight, setSelectedIndexRight] = useState(0)
 
-    const fetchData = async () => {
-        const response = await axios.get<Songs>(
-            `${serverBaseURL}${songsLyricsURL}/${songId}`,
-        )
+    const lyricsBySongIdURL = `${serverBaseURL}${songsLyricsURL}/${songId}`
+
+    const fetchSongLyricsData = async () => {
+        const response = await axios.get<LyricsBySongResponse>(lyricsBySongIdURL)
         setSongs(response.data.songLyrics)
     }
 
-    if (!dataFetched) {
-        setDataFetched(true)
-        fetchData()
+    if (!songLyricsDataFetched) {
+        setSongLyricsDataFetched(true)
+        fetchSongLyricsData()
     }
 
     // Handle by left and right component to avoid changing state of both at the same time
@@ -52,7 +39,7 @@ function Song() {
     }
 
     // Create a button for every language available
-    const buttonListLeft = songs.map((item: Song, index: number) => (
+    const buttonListLeft = songs.map((item: LyricsBySong, index: number) => (
         <li key={index}>
             <button onClick={() => handleButtonClickLeft(index)}>
                 {item.language}
@@ -60,7 +47,7 @@ function Song() {
         </li>
     ))
 
-    const buttonListRight = songs.map((item: Song, index: number) => (
+    const buttonListRight = songs.map((item: LyricsBySong, index: number) => (
         <li key={index}>
             <button onClick={() => handleButtonClickRight(index)}>
                 {item.language}

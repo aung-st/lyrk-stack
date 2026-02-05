@@ -7,30 +7,21 @@ const serverBaseURL: string = import.meta.env.VITE_SERVER_BASE_URL!
 const songsURL: string = import.meta.env.VITE_SONGS_URL!
 
 function Home() {
-    type Song = {
-        song_id: number
-        song_title: string
-        artist_id: number
-        artist_name: string
-    }
-
-    type Songs = {
-        songs: Song[]
-    }
-
     const placeholder: string = "Search for a song"
     const [songs, setSongs] = useState<Song[]>([])
     const [searchValue, setSearchValue] = useState(placeholder)
-    const [dataFetched, setDataFetched] = useState(false)
+    const [songsCollectionDataFetched, setSongsCollectionDataFetched] =
+        useState(false)
+    const songsCollectionURL = `${serverBaseURL}${songsURL}`
 
-    const fetchData = async () => {
-        const response = await axios.get<Songs>(`${serverBaseURL}${songsURL}`)
+    const fetchSongCollectionData = async () => {
+        const response = await axios.get<Songs>(songsCollectionURL)
         setSongs(response.data.songs)
     }
 
-    if (!dataFetched) {
-        setDataFetched(true)
-        fetchData()
+    if (!songsCollectionDataFetched) {
+        setSongsCollectionDataFetched(true)
+        fetchSongCollectionData()
     }
 
     const searchResults = songs.filter((item) => {
