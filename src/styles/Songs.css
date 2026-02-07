@@ -1,9 +1,30 @@
-#song-header {
-    padding-left: 1.7em;
+@import url("index.css");
+
+.songs-container h1,
+.songs-container h2 {
+    text-align: center;
 }
 
-.song-list {
+.songs-container {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10vw;
+    margin-left: 10vw;
+}
+
+.songs-list,
+.artists-list {
+    border: solid var(--primary-element-color);
+    border-width: 1px;
+    text-align: center;
     list-style-type: none;
-    line-height: 2.5em;
-    overflow: hidden;
+    padding: 0;
+    margin-right: 5vw;
+    margin-left: 5vw;
+    flex: 1;
+}
+
+.list-row {
+    height: 100vh;
+    display: flex;
 }

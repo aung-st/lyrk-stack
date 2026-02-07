@@ -11,6 +11,10 @@ body {
     text-align: center;
 }
 
+.search-container li {
+    list-style-type: none;
+}
+
 .search-results {
     justify-content: center;
     text-align: center;
