@@ -3,10 +3,12 @@ import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
+import eslintPluginImport from 'eslint-plugin-import'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
+
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores(['dist','coverage']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
@@ -18,6 +20,24 @@ export default defineConfig([
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
+       parserOptions: {
+        ecmaFeatures: {
+          jsx: true, 
+        },
+      },
+    },
+    plugins: {
+      import: eslintPluginImport, 
+    },
+    rules: {
+      'react/react-in-jsx-scope': 'off', 
+       'import/order': [
+            'error',
+            {
+                groups: [['external', 'internal'], 'parent', 'sibling', 'index'],
+                'newlines-between': 'always',
+            },
+        ],
     },
   },
 ])
