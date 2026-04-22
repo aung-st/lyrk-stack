@@ -1,28 +1,25 @@
 import "../styles/Home.css"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import axios from "axios"
-
-const serverBaseURL: string = import.meta.env.VITE_SERVER_BASE_URL!
-const songsURL: string = import.meta.env.VITE_SONGS_URL!
 
 function Home() {
     const placeholder: string = "Search for a song"
     const [songs, setSongs] = useState<Song[]>([])
     const [searchValue, setSearchValue] = useState(placeholder)
-    const [songsCollectionDataFetched, setSongsCollectionDataFetched] =
-        useState(false)
-    const songsCollectionURL = `${serverBaseURL}${songsURL}`
 
-    const fetchSongCollectionData = async () => {
-        const response = await axios.get<Songs>(songsCollectionURL)
-        setSongs(response.data.songs)
-    }
+    useEffect(() => {
+        const fetchSongCollectionData = async () => {
+            try {
+                const response = await fetch("../../songs.json")
+                const data = await response.json()
+                setSongs(data)
+            } catch (error) {
+                console.error("Error fetching songs:", error)
+            }
+        }
 
-    if (!songsCollectionDataFetched) {
-        setSongsCollectionDataFetched(true)
         fetchSongCollectionData()
-    }
+    }, [])
 
     const searchResults = songs.filter((item) => {
         if (searchValue === "" || searchValue === placeholder) {
@@ -30,9 +27,7 @@ function Home() {
         }
 
         const title: string = item.song_title.toLowerCase()
-        if (title.startsWith(searchValue.toLowerCase())) {
-            return title
-        }
+        return title.startsWith(searchValue.toLowerCase())
     })
 
     return (
@@ -44,7 +39,7 @@ function Home() {
                     type="text"
                     name="search"
                     placeholder={searchValue}
-                ></input>
+                />
             </div>
             <div className="search-container">
                 {searchResults.length > 0 ? (
@@ -65,7 +60,9 @@ function Home() {
                                     to={`/artists/${item.artist_id}`}
                                     state={{ from: { item } }}
                                 >
-                                    {item.artist_name}
+                                    {item.artist_name
+                                        ? item.artist_name
+                                        : "Unknown Artist"}
                                 </Link>
                             </li>
                         ))}

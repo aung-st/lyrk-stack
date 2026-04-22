@@ -29,13 +29,15 @@
     },
     "dependencies": {
         "@types/cors": "^2.8.19",
-        "axios": "^1.13.2",
+        "@types/sql.js": "^1.4.11",
+        "axios": "^1.15.2",
         "cors": "^2.8.5",
         "dotenv": "^17.2.4",
         "express": "^5.2.1",
         "react": "^19.2.4",
         "react-dom": "^19.2.4",
         "react-icons": "^5.5.0",
+        "sql.js": "^1.14.1",
         "sqlite": "^5.1.1",
         "sqlite3": "^5.1.7"
     },

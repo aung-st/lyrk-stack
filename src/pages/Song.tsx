@@ -1,45 +1,46 @@
 import { useLocation } from "react-router-dom"
-import { useState } from "react"
-import axios from "axios"
+import { useState, useEffect } from "react"
 import "../styles/Song.css"
-
-const serverBaseURL: string = import.meta.env.VITE_SERVER_BASE_URL!
-const songsLyricsURL: string = import.meta.env.VITE_SONG_LYRICS_URL!
 
 function Song() {
     const location = useLocation()
     const { from } = location.state
     const songId = from.item.song_id
-    const [songs, setSongs] = useState<LyricsBySong[]>([])
-    const [songLyricsDataFetched, setSongLyricsDataFetched] = useState(false)
-    const [selectedIndexLeft, setSelectedIndexLeft] = useState(0)
-    const [selectedIndexRight, setSelectedIndexRight] = useState(0)
 
-    const lyricsBySongIdURL = `${serverBaseURL}${songsLyricsURL}/${songId}`
+    const [lyrics, setLyrics] = useState<LyricsBySong[]>([])
+    const [selectedIndexLeft, setSelectedIndexLeft] = useState<number>(0)
+    const [selectedIndexRight, setSelectedIndexRight] = useState<number>(0)
 
-    const fetchSongLyricsData = async () => {
-        const response = await axios.get<LyricsBySongResponse>(lyricsBySongIdURL)
-        setSongs(response.data.songLyrics)
-    }
+    useEffect(() => {
+        const fetchSongLyricsData = async () => {
+            try {
+                const response = await fetch("../../lyrics.json")
+                const data: LyricsBySong[] = await response.json()
 
-    if (!songLyricsDataFetched) {
-        setSongLyricsDataFetched(true)
+                // Filter lyrics by song_id
+                const filteredLyrics = data.filter(
+                    (lyric) => lyric.song_id === songId,
+                )
+                setLyrics(filteredLyrics)
+            } catch (error) {
+                console.error("Error fetching lyrics:", error)
+            }
+        }
+
         fetchSongLyricsData()
-    }
+    }, [songId])
 
-    // Handle by left and right component to avoid changing state of both at the same time
+    // Handle button click for left and right components
     const handleButtonClickLeft = (index: number) => {
-        const newIndex: number = index
-        setSelectedIndexLeft(newIndex)
+        setSelectedIndexLeft(index)
     }
 
     const handleButtonClickRight = (index: number) => {
-        const newIndex: number = index
-        setSelectedIndexRight(newIndex)
+        setSelectedIndexRight(index)
     }
 
     // Create a button for every language available
-    const buttonListLeft = songs.map((item: LyricsBySong, index: number) => (
+    const buttonListLeft = lyrics.map((item, index) => (
         <li key={index}>
             <button onClick={() => handleButtonClickLeft(index)}>
                 {item.language}
@@ -47,7 +48,7 @@ function Song() {
         </li>
     ))
 
-    const buttonListRight = songs.map((item: LyricsBySong, index: number) => (
+    const buttonListRight = lyrics.map((item, index) => (
         <li key={index}>
             <button onClick={() => handleButtonClickRight(index)}>
                 {item.language}
@@ -58,7 +59,7 @@ function Song() {
     return (
         <>
             <div className="song-header">
-                <h1>{songs[0]?.song_title}</h1>
+                <h1>{lyrics[0]?.song_title || "Song Title"}</h1>
             </div>
             <div className="button-wrapper">
                 <ul className="button-list left">{buttonListLeft}</ul>
@@ -66,7 +67,7 @@ function Song() {
             </div>
             <div className="song-wrapper">
                 <div className="lyric left">
-                    {songs[selectedIndexLeft]?.lyrics_text
+                    {lyrics[selectedIndexLeft]?.lyrics_text
                         .split("\n")
                         .map((line, index) => (
                             <span key={index}>
@@ -76,7 +77,7 @@ function Song() {
                         ))}
                 </div>
                 <div className="lyric right">
-                    {songs[selectedIndexRight]?.lyrics_text
+                    {lyrics[selectedIndexRight]?.lyrics_text
                         .split("\n")
                         .map((line, index) => (
                             <span key={index}>
