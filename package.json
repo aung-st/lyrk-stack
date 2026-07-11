@@ -11,6 +11,7 @@
         "format": "prettier --write \"**/*.+(ts|tsx|json|yml|yaml|css|md|vue|json)\"",
         "prepare": "husky install",
         "report": "npx playwright show-report",
+        "e2e": "docker compose run --rm playwright",
         "compose": "docker compose build --no-cache",
         "up": "docker compose up",
         "test": "jest",
