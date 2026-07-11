@@ -4,25 +4,22 @@ import { Link } from "react-router-dom"
 
 function Songs() {
     const [songs, setSongs] = useState<Song[]>([])
-    const [songsCollectionDataFetched, setSongsCollectionDataFetched] =
-        useState(false)
 
     useEffect(() => {
         const fetchSongCollectionData = async () => {
             try {
-                const response = await fetch("../../songs.json")
+                const baseUrl = import.meta.env.VITE_SERVER_BASE_URL
+                const songsUrl = import.meta.env.VITE_SONGS_URL
+                const response = await fetch(`${baseUrl}${songsUrl}`)
                 const data = await response.json()
-                setSongs(data)
+                setSongs(data.songs)
             } catch (error) {
                 console.error("Error fetching songs:", error)
             }
         }
 
-        if (!songsCollectionDataFetched) {
-            setSongsCollectionDataFetched(true)
-            fetchSongCollectionData()
-        }
-    }, [songsCollectionDataFetched])
+        fetchSongCollectionData()
+    }, [])
 
     return (
         <div className="songs-container">

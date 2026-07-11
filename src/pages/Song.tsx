@@ -14,14 +14,11 @@ function Song() {
     useEffect(() => {
         const fetchSongLyricsData = async () => {
             try {
-                const response = await fetch("../../lyrics.json")
-                const data: LyricsBySong[] = await response.json()
-
-                // Filter lyrics by song_id
-                const filteredLyrics = data.filter(
-                    (lyric) => lyric.song_id === songId,
-                )
-                setLyrics(filteredLyrics)
+                const baseUrl = import.meta.env.VITE_SERVER_BASE_URL
+                const lyricsUrl = import.meta.env.VITE_SONG_LYRICS_URL
+                const response = await fetch(`${baseUrl}${lyricsUrl}/${songId}`)
+                const data = await response.json()
+                setLyrics(data.songLyrics)
             } catch (error) {
                 console.error("Error fetching lyrics:", error)
             }
