@@ -1,4 +1,5 @@
 import "../styles/About.css"
+import { Link } from "react-router-dom"
 
 function About() {
     return (
@@ -39,7 +40,9 @@ function About() {
                     sharing.
                     <br></br>No copyright infringement is intended.
                 </p>
-                <button>Start Adding Songs!</button>
+                <Link to="/add-song">
+                    <button>Start Adding Songs!</button>
+                </Link>
             </div>
         </>
     )

@@ -27,6 +27,8 @@ app.use(
     }),
 )
 
+app.use(express.json())
+
 app.get(songsURL, async (req, res) => {
     try {
         const db = await openDatabase()
@@ -65,6 +67,79 @@ app.get(`${songsLyricsURL}/:song_id`, async (req, res) => {
     } catch (error) {
         console.error(error)
         res.status(500).json({ error: "Database query failed" })
+    }
+})
+
+app.post(songsURL, async (req, res) => {
+    const { song_title, artist_name } = req.body
+    try {
+        const db = await openDatabase()
+        const artist = await db.get(
+            "SELECT artist_id FROM artists WHERE artist_name=?;",
+            [artist_name],
+        )
+
+        let artistId: number
+        if (artist) {
+            artistId = artist.artist_id
+        } else {
+            const result = await db.run(
+                "INSERT INTO artists (artist_name) VALUES (?);",
+                [artist_name],
+            )
+            artistId = result.lastID!
+        }
+
+        const existingSong = await db.get(
+            "SELECT song_id FROM songs WHERE song_title=? AND artist_id=?;",
+            [song_title, artistId],
+        )
+
+        let songId: number
+        if (existingSong) {
+            songId = existingSong.song_id
+        } else {
+            const result = await db.run(
+                "INSERT INTO songs (song_title, artist_id) VALUES (?, ?);",
+                [song_title, artistId],
+            )
+            songId = result.lastID!
+        }
+
+        res.status(201).json({ song_id: songId })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ error: "Failed to add song" })
+    }
+})
+
+app.post(songsLyricsURL, async (req, res) => {
+    const { song_id, language, lyrics_text, is_translated } = req.body
+    const normalizedLanguage =
+        language.charAt(0).toUpperCase() + language.slice(1).toLowerCase()
+    try {
+        const db = await openDatabase()
+        const existingLyrics = await db.get(
+            "SELECT lyric_id FROM lyrics WHERE song_id=? AND language=?;",
+            [song_id, normalizedLanguage],
+        )
+
+        if (existingLyrics) {
+            await db.run(
+                "UPDATE lyrics SET lyrics_text=?, is_translated=? WHERE lyric_id=?;",
+                [lyrics_text, is_translated ? 1 : 0, existingLyrics.lyric_id],
+            )
+            res.status(200).json({ lyric_id: existingLyrics.lyric_id })
+        } else {
+            const result = await db.run(
+                "INSERT INTO lyrics (song_id, language, lyrics_text, is_translated) VALUES (?, ?, ?, ?);",
+                [song_id, normalizedLanguage, lyrics_text, is_translated ? 1 : 0],
+            )
+            res.status(201).json({ lyric_id: result.lastID })
+        }
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ error: "Failed to add lyrics" })
     }
 })
 

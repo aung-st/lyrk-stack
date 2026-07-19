@@ -22,6 +22,11 @@ export default function Navbar() {
                         <button>Songs</button>
                     </li>
                 </Link>
+                <Link to="/add-song">
+                    <li className="navbar-item">
+                        <button>Add Song</button>
+                    </li>
+                </Link>
                 <Link to="/home">
                     <li className="navbar-item">
                         <button>Home</button>

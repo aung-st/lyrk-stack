@@ -38,4 +38,15 @@ describe("Navbar Component", () => {
         expect(aboutButton).toBeInTheDocument()
         expect(aboutButton).toHaveTextContent("Home")
     })
+    it("renders the Add Song button with correct text", () => {
+        render(
+            <MemoryRouter>
+                <Navbar />
+            </MemoryRouter>,
+        )
+
+        const aboutButton = screen.getByRole("button", { name: /Add Song/i })
+        expect(aboutButton).toBeInTheDocument()
+        expect(aboutButton).toHaveTextContent("Add Song")
+    })
 })
