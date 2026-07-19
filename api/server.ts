@@ -58,7 +58,7 @@ app.get(`${songsLyricsURL}/:song_id`, async (req, res) => {
     try {
         const db = await openDatabase()
         const songLyricsList = await db.all(
-            "SELECT s.song_id, s.song_title, l.lyric_id, l.lyrics_text, l.language, l.is_translated FROM songs s INNER JOIN lyrics l on s.song_id=l.song_id WHERE s.song_id=?;",
+            "SELECT s.song_id, s.song_title, l.lyric_id, l.lyrics_text, l.language, l.is_translated FROM songs s LEFT JOIN lyrics l on s.song_id=l.song_id WHERE s.song_id=?;",
             [songId],
         )
         res.json({ songLyrics: songLyricsList })

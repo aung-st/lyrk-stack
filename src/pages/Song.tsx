@@ -1,11 +1,10 @@
-import { useLocation } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
 import "../styles/Song.css"
 
 function Song() {
-    const location = useLocation()
-    const { from } = location.state
-    const songId = from.item.song_id
+    const { id } = useParams()
+    const songId = Number(id)
 
     const [lyrics, setLyrics] = useState<LyricsBySong[]>([])
     const [selectedIndexLeft, setSelectedIndexLeft] = useState<number>(0)
@@ -65,7 +64,7 @@ function Song() {
             <div className="song-wrapper">
                 <div className="lyric left">
                     {lyrics[selectedIndexLeft]?.lyrics_text
-                        .split("\n")
+                        ?.split("\n")
                         .map((line, index) => (
                             <span key={index}>
                                 {line}
@@ -75,7 +74,7 @@ function Song() {
                 </div>
                 <div className="lyric right">
                     {lyrics[selectedIndexRight]?.lyrics_text
-                        .split("\n")
+                        ?.split("\n")
                         .map((line, index) => (
                             <span key={index}>
                                 {line}

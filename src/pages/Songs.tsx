@@ -31,10 +31,7 @@ function Songs() {
                         <h2>Name</h2>
                         {songs.map((item: Song) => (
                             <li key={item.song_id}>
-                                <Link
-                                    to={`/songs/${item.song_id}`}
-                                    state={{ from: { item } }}
-                                >
+                                <Link to={`/songs/${item.song_id}`}>
                                     {item.song_title}
                                 </Link>
                             </li>
@@ -44,10 +41,7 @@ function Songs() {
                         <h2>Artist</h2>
                         {songs.map((item: Song) => (
                             <li key={item.song_id}>
-                                <Link
-                                    to={`/artists/${item.artist_id}`}
-                                    state={{ from: { item } }}
-                                >
+                                <Link to={`/artists/${item.artist_id}`}>
                                     {item.artist_name
                                         ? item.artist_name
                                         : "Unknown Artist"}

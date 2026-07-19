@@ -52,16 +52,10 @@ function Home() {
                         </li>
                         {searchResults.map((item) => (
                             <li className="results" key={item.song_id}>
-                                <Link
-                                    to={`/songs/${item.song_id}`}
-                                    state={{ from: { item } }}
-                                >
+                                <Link to={`/songs/${item.song_id}`}>
                                     {item.song_title}
                                 </Link>
-                                <Link
-                                    to={`/artists/${item.artist_id}`}
-                                    state={{ from: { item } }}
-                                >
+                                <Link to={`/artists/${item.artist_id}`}>
                                     {item.artist_name
                                         ? item.artist_name
                                         : "Unknown Artist"}
