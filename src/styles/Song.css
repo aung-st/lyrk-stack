@@ -18,6 +18,20 @@ a {
     text-decoration-line: underline;
     text-decoration-thickness: 0.4em;
     text-underline-offset: 0.6rem;
+    position: relative;
+}
+
+.delete-button {
+    position: absolute;
+    left: 94.8%;
+    margin-left: 0.5rem;
+    bottom: -0.2em;
+    border-color: #cc3333;
+    font-size: 0.8em;
+}
+
+.delete-button:hover {
+    background-color: #cc3333;
 }
 .button-wrapper {
     width: 100%;

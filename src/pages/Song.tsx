@@ -1,9 +1,10 @@
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { useState, useEffect } from "react"
 import "../styles/Song.css"
 
 function Song() {
     const { id } = useParams()
+    const navigate = useNavigate()
     const songId = Number(id)
 
     const [lyrics, setLyrics] = useState<LyricsBySong[]>([])
@@ -35,6 +36,21 @@ function Song() {
         setSelectedIndexRight(index)
     }
 
+    const handleDelete = async () => {
+        if (!window.confirm("Delete this song and all its lyrics?")) return
+
+        try {
+            const baseUrl = import.meta.env.VITE_SERVER_BASE_URL
+            const songsUrl = import.meta.env.VITE_SONGS_URL
+            await fetch(`${baseUrl}${songsUrl}/${songId}`, {
+                method: "DELETE",
+            })
+            navigate("/songs")
+        } catch (error) {
+            console.error("Error deleting song:", error)
+        }
+    }
+
     // Create a button for every language available
     const buttonListLeft = lyrics.map((item, index) => (
         <li key={index}>
@@ -56,6 +72,9 @@ function Song() {
         <>
             <div className="song-header">
                 <h1>{lyrics[0]?.song_title || "Song Title"}</h1>
+                <button className="delete-button" onClick={handleDelete}>
+                    Delete
+                </button>
             </div>
             <div className="button-wrapper">
                 <ul className="button-list left">{buttonListLeft}</ul>

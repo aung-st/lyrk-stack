@@ -25,7 +25,7 @@ async function openDatabase() {
 app.use(
     cors({
         origin: [baseURL],
-        methods: ["GET", "POST"],
+        methods: ["GET", "POST", "DELETE"],
     }),
 )
 
@@ -167,6 +167,19 @@ app.post(songsLyricsURL, async (req, res) => {
     } catch (error) {
         console.error(error)
         res.status(500).json({ error: "Failed to add lyrics" })
+    }
+})
+
+app.delete(`${songsURL}/:song_id`, async (req, res) => {
+    const songId = req.params.song_id
+    try {
+        const db = await openDatabase()
+        await db.run("DELETE FROM lyrics WHERE song_id=?;", [songId])
+        await db.run("DELETE FROM songs WHERE song_id=?;", [songId])
+        res.status(204).send()
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ error: "Failed to delete song" })
     }
 })
 
