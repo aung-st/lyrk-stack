@@ -15,11 +15,43 @@ body {
     list-style-type: none;
 }
 
-.search-results {
-    justify-content: center;
-    text-align: center;
+.song-list {
+    list-style-type: none;
+    padding: 0;
+    width: 40vw;
+    margin: 0 auto 10;
+    border: solid var(--primary-element-color);
+    border-width: 1px;
+}
+
+.result-header {
+    display: flex;
+    background-color: var(--primary-element-color);
+    color: var(--primary-bg-color);
+}
+
+.result-header span {
+    font-weight: 700;
 }
 
 .results {
-    margin-right: 2vw;
+    display: flex;
+}
+
+.results a {
+    padding: 0;
+    margin: 0;
+}
+
+.result-header span,
+.results a {
+    width: 50%;
+    text-align: left;
+    box-sizing: border-box;
+    padding-left: 1rem;
+}
+
+.result-header span:first-child,
+.results a:first-child {
+    border-right: 1px solid var(--primary-element-color);
 }
