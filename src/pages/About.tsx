@@ -30,16 +30,14 @@ function About() {
                     Lyrk Stack makes it super convenient to keep track of all your
                     multilingual content in one place!
                 </p>
-                <p>
-                    <div className="list-wrapper">
-                        You can:
-                        <ul>
-                            <li>Add as many translations as you want to a song.</li>
-                            <li>Refine translations for existing lyrics.</li>
-                            <li>Export all your song data for a rainy day!</li>
-                        </ul>
-                    </div>
-                </p>
+                <div className="list-wrapper">
+                    You can:
+                    <ul>
+                        <li>Add as many translations as you want to a song.</li>
+                        <li>Refine translations for existing lyrics.</li>
+                        <li>Export all your song data for a rainy day!</li>
+                    </ul>
+                </div>
                 <p>
                     Disclaimer: This is purely intended for personal use and not for
                     sharing.
