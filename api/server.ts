@@ -70,6 +70,31 @@ app.get(`${songsLyricsURL}/:song_id`, async (req, res) => {
     }
 })
 
+app.get(`${songsURL}/artist/:artist_id`, async (req, res) => {
+    const artistId = req.params.artist_id
+    try {
+        const db = await openDatabase()
+        const artist = await db.get(
+            "SELECT artist_name FROM artists WHERE artist_id=?;",
+            [artistId],
+        )
+
+        if (!artist) {
+            res.status(404).json({ error: "Artist not found" })
+            return
+        }
+
+        const songs = await db.all(
+            "SELECT song_id, song_title FROM songs WHERE artist_id=?;",
+            [artistId],
+        )
+        res.json({ artist_name: artist.artist_name, songs })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ error: "Database query failed" })
+    }
+})
+
 app.post(songsURL, async (req, res) => {
     const { song_title, artist_name } = req.body
     try {
