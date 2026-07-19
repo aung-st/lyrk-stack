@@ -2,6 +2,11 @@ import "../styles/About.css"
 import { Link } from "react-router-dom"
 
 function About() {
+    const handleExport = () => {
+        const baseUrl = import.meta.env.VITE_SERVER_BASE_URL
+        window.open(`${baseUrl}/api/export`, "_blank")
+    }
+
     return (
         <>
             <div className="about-container">
@@ -40,9 +45,12 @@ function About() {
                     sharing.
                     <br></br>No copyright infringement is intended.
                 </p>
-                <Link to="/add-song">
-                    <button>Start Adding Songs!</button>
-                </Link>
+                <div className="about-buttons">
+                    <Link to="/add-song">
+                        <button>Start Adding Songs!</button>
+                    </Link>
+                    <button onClick={handleExport}>Export Data</button>
+                </div>
             </div>
         </>
     )

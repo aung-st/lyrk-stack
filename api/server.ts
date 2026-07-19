@@ -4,6 +4,8 @@ import sqlite3 from "sqlite3"
 import { open } from "sqlite"
 import { config } from "dotenv"
 
+import path from "path"
+
 config()
 
 const songsURL: string = process.env.VITE_SONGS_URL!
@@ -166,6 +168,11 @@ app.post(songsLyricsURL, async (req, res) => {
         console.error(error)
         res.status(500).json({ error: "Failed to add lyrics" })
     }
+})
+
+app.get("/api/export", (req, res) => {
+    const dbPath = path.resolve("./api/songbook.db")
+    res.download(dbPath, "songbook.db")
 })
 
 app.listen(port, () => {

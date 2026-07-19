@@ -7,9 +7,10 @@
     margin-left: 30vw;
 }
 
-.about-container button {
-    margin-left: 14vw;
-    margin-right: 14vw;
+.about-buttons {
+    gap: 1rem;
+    justify-content: center;
+    align-items: stretch;
 }
 
 .about-container ul {
