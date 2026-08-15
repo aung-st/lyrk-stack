@@ -82,6 +82,14 @@ app.get(`${songsURL}/artist/:artist_id`, async (req, res) => {
 app.post(songsURL, async (req, res) => {
     const { song_title, artist_name } = req.body
     try {
+        if (typeof song_title !== "string" || song_title.trim() === "") {
+            res.status(400).json({ error: "song_title is required" })
+            return
+        }
+        if (typeof artist_name !== "string" || artist_name.trim() === "") {
+            res.status(400).json({ error: "artist_name is required" })
+            return
+        }
         const { song_id } = await addSong(song_title, artist_name)
         res.status(201).json({ song_id })
     } catch (error) {
@@ -93,6 +101,18 @@ app.post(songsURL, async (req, res) => {
 app.post(songsLyricsURL, async (req, res) => {
     const { song_id, language, lyrics_text, is_translated } = req.body
     try {
+        if (!Number.isInteger(song_id)) {
+            res.status(400).json({ error: "song_id is required" })
+            return
+        }
+        if (typeof language !== "string" || language.trim() === "") {
+            res.status(400).json({ error: "language is required" })
+            return
+        }
+        if (typeof lyrics_text !== "string" || lyrics_text.trim() === "") {
+            res.status(400).json({ error: "lyrics_text is required" })
+            return
+        }
         const { lyric_id, created } = await upsertLyrics(
             song_id,
             language,
