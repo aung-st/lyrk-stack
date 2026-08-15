@@ -63,6 +63,7 @@
 }
 
 .settings-song-title {
+    font-size: 1.5rem;
     font-weight: bold;
 }
 
@@ -129,5 +130,6 @@
 }
 
 .settings-lyric-language {
+    font-size: 1.5rem;
     font-weight: bold;
 }

@@ -15,6 +15,14 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+a {
+    font-size: 1em;
+    font-weight: 700;
+    color: #1ba098;
+    padding: 0 1rem;
+    margin-right: 0.1vw;
+}
+
 hr {
     color: var(--primary-element-color);
 }

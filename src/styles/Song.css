@@ -6,13 +6,6 @@ body {
     padding-right: 50vw;
 }
 
-a {
-    font-size: 1em;
-    font-weight: 700;
-    color: #1ba098;
-    padding: 0 1rem;
-    margin-right: 0.1vw;
-}
 .song-header {
     text-align: center;
     text-decoration-line: underline;
@@ -71,6 +64,6 @@ a {
     padding-right: 20vw;
 }
 
-span {
+.song-wrapper span {
     font-size: 1.5rem;
 }
