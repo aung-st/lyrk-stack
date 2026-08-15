@@ -44,3 +44,7 @@ input {
     width: 300px;
     height: 25px;
 }
+
+textarea {
+    outline: 0.3em solid var(--secondary-element-color);
+}

@@ -160,7 +160,7 @@ function AddSong() {
                         required
                     />
                 </div>
-                <div className="form-group">
+                <div className="form-group textbox">
                     <label htmlFor="lyrics-text">Lyrics</label>
                     <textarea
                         id="lyrics-text"
