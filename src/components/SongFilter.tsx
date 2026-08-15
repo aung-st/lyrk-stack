@@ -5,11 +5,13 @@ export type SongFilterPredicate = (song: Song, query: string) => boolean
 
 interface SongFilterProps {
     songs: Song[]
-    label: string
+    label?: string
     id: string
     placeholder?: string
     noResultsMessage: string
     filter?: SongFilterPredicate
+    showAllOnEmptyQuery?: boolean
+    className?: string
     children: (filteredSongs: Song[]) => ReactNode
 }
 
@@ -27,18 +29,24 @@ function SongFilter({
     placeholder,
     noResultsMessage,
     filter = matchesTitleOrArtist,
+    showAllOnEmptyQuery = true,
+    className,
     children,
 }: SongFilterProps) {
     const [query, setQuery] = useState("")
 
     const normalizedQuery = query.trim().toLowerCase()
-    const filteredSongs = songs.filter((song) => filter(song, normalizedQuery))
-    const showNoResults = normalizedQuery !== "" && filteredSongs.length === 0
+    const hasQuery = normalizedQuery !== ""
+    const filteredSongs =
+        !showAllOnEmptyQuery && !hasQuery
+            ? []
+            : songs.filter((song) => filter(song, normalizedQuery))
+    const showNoResults = hasQuery && filteredSongs.length === 0
 
     return (
-        <div className="song-filter">
+        <div className={className ? `song-filter ${className}` : "song-filter"}>
             <div className="form-group">
-                <label htmlFor={id}>{label}</label>
+                {label && <label htmlFor={id}>{label}</label>}
                 <input
                     id={id}
                     type="text"

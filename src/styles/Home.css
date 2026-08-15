@@ -5,6 +5,13 @@ body {
     overflow: hidden;
 }
 
+.song-filter-home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
 .search-container {
     display: flex;
     justify-content: center;
