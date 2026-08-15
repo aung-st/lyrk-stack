@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom"
 import { useState, useEffect } from "react"
 
 import "../styles/Song.css"
+import ErrorDisplay from "../components/ErrorDisplay.tsx"
 import { getSongLyrics, deleteSong } from "../utils/songService.ts"
 
 function Song() {
@@ -11,6 +12,7 @@ function Song() {
 
     const [lyrics, setLyrics] = useState<LyricsBySong[]>([])
     const [songTitle, setSongTitle] = useState("")
+    const [error, setError] = useState<Error | string | null>(null)
     const [selectedIndexLeft, setSelectedIndexLeft] = useState<number>(0)
     const [selectedIndexRight, setSelectedIndexRight] = useState<number>(0)
 
@@ -20,8 +22,11 @@ function Song() {
                 const { songLyrics, song_title } = await getSongLyrics(songId)
                 setLyrics(songLyrics ?? [])
                 setSongTitle(song_title ?? "")
-            } catch (error) {
-                console.error("Error fetching lyrics:", error)
+                setError(null)
+            } catch (err) {
+                setError(
+                    err instanceof Error ? err : new Error("Something went wrong"),
+                )
             }
         }
 
@@ -43,8 +48,8 @@ function Song() {
         try {
             await deleteSong(songId)
             navigate("/songs")
-        } catch (error) {
-            console.error("Error deleting song:", error)
+        } catch (err) {
+            setError(err instanceof Error ? err : new Error("Something went wrong"))
         }
     }
 
@@ -67,6 +72,7 @@ function Song() {
 
     return (
         <>
+            {error && <ErrorDisplay error={error} />}
             <div className="song-header">
                 <h1>{songTitle || "Song Title"}</h1>
                 <button className="delete-button" onClick={handleDelete}>
@@ -77,6 +83,9 @@ function Song() {
                 <ul className="button-list left">{buttonListLeft}</ul>
                 <ul className="button-list right">{buttonListRight}</ul>
             </div>
+            {!error && lyrics.length === 0 && (
+                <p className="empty-state">No lyrics yet</p>
+            )}
             <div className="song-wrapper">
                 <div className="lyric left">
                     {lyrics[selectedIndexLeft]?.lyrics_text

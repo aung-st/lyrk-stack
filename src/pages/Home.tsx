@@ -8,17 +8,17 @@ import { getSongs } from "../utils/songService.ts"
 
 function Home() {
     const [songs, setSongs] = useState<Song[]>([])
-    const [error, setError] = useState("")
+    const [error, setError] = useState<Error | string | null>(null)
     const [query, setQuery] = useState("")
 
     const fetchSongs = useCallback(async (showError: boolean) => {
         try {
             setSongs(await getSongs())
-            setError("")
-        } catch (error) {
+            setError(null)
+        } catch (err) {
             if (showError) {
                 setError(
-                    error instanceof Error ? error.message : "Something went wrong",
+                    err instanceof Error ? err : new Error("Something went wrong"),
                 )
             }
         }
@@ -43,7 +43,7 @@ function Home() {
 
     return (
         <>
-            {error && <ErrorDisplay message={error} />}
+            {error && <ErrorDisplay error={error} />}
             <SongFilter
                 songs={songs}
                 id="search-bar"
