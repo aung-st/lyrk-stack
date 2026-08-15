@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
 import { getSongs, addSong, addSongLyrics } from "../utils/songService.ts"
+import ErrorDisplay from "../components/ErrorDisplay.tsx"
 
 function AddSong() {
     const navigate = useNavigate()
@@ -63,7 +64,7 @@ function AddSong() {
     return (
         <div className="add-song-container">
             <h1>Add Song</h1>
-            {error && <div className="error-message">{error}</div>}
+            {error && <ErrorDisplay error={error} />}
             <div className="mode-toggle">
                 <button
                     className={mode === "new" ? "active" : ""}

@@ -3,6 +3,7 @@ import "../styles/Settings.css"
 import SettingsToolbar from "../components/settings/SettingsToolbar.tsx"
 import SettingsSongListItem from "../components/settings/SettingsSongListItem.tsx"
 import SongFilter from "../components/SongFilter.tsx"
+import ErrorDisplay from "../components/ErrorDisplay.tsx"
 import { useManageSongs } from "../hooks/useManageSongs.ts"
 
 function Settings() {
@@ -19,7 +20,7 @@ function Settings() {
     return (
         <div className="settings-container">
             <h1>Settings</h1>
-            {error && <div className="error-message">{error}</div>}
+            {error && <ErrorDisplay error={error} />}
             <SettingsToolbar onExport={handleExport} />
             <hr />
             <h2>Manage Songs</h2>
