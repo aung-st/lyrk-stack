@@ -50,7 +50,12 @@ app.get(songsLyricsURL, async (req, res) => {
         const songLyricsList = await db.all(
             "SELECT s.song_id, s.song_title, l.lyric_id, l.lyrics_text, l.language, l.is_translated FROM songs s INNER JOIN lyrics l on s.song_id=l.song_id;",
         )
-        res.json({ songLyrics: songLyricsList })
+        res.json({
+            songLyrics: songLyricsList.map((row) => ({
+                ...row,
+                is_translated: !!row.is_translated,
+            })),
+        })
     } catch (error) {
         console.error(error)
         res.status(500).json({ error: "Database query failed" })
@@ -61,11 +66,27 @@ app.get(`${songsLyricsURL}/:song_id`, async (req, res) => {
     const songId = req.params.song_id
     try {
         const db = await openDatabase()
+        const song = await db.get(
+            "SELECT song_id, song_title FROM songs WHERE song_id=?;",
+            [songId],
+        )
+
+        if (!song) {
+            res.status(404).json({ error: "Song not found" })
+            return
+        }
+
         const songLyricsList = await db.all(
             "SELECT s.song_id, s.song_title, l.lyric_id, l.lyrics_text, l.language, l.is_translated FROM songs s INNER JOIN lyrics l on s.song_id=l.song_id WHERE s.song_id=?;",
             [songId],
         )
-        res.json({ songLyrics: songLyricsList })
+        res.json({
+            songLyrics: songLyricsList.map((row) => ({
+                ...row,
+                is_translated: !!row.is_translated,
+            })),
+            song_title: song.song_title,
+        })
     } catch (error) {
         console.error(error)
         res.status(500).json({ error: "Database query failed" })

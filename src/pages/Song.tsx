@@ -8,6 +8,7 @@ function Song() {
     const songId = Number(id)
 
     const [lyrics, setLyrics] = useState<LyricsBySong[]>([])
+    const [songTitle, setSongTitle] = useState("")
     const [selectedIndexLeft, setSelectedIndexLeft] = useState<number>(0)
     const [selectedIndexRight, setSelectedIndexRight] = useState<number>(0)
 
@@ -18,7 +19,8 @@ function Song() {
                 const lyricsUrl = import.meta.env.VITE_SONG_LYRICS_URL
                 const response = await fetch(`${baseUrl}${lyricsUrl}/${songId}`)
                 const data = await response.json()
-                setLyrics(data.songLyrics)
+                setLyrics(data.songLyrics ?? [])
+                setSongTitle(data.song_title ?? "")
             } catch (error) {
                 console.error("Error fetching lyrics:", error)
             }
@@ -71,7 +73,7 @@ function Song() {
     return (
         <>
             <div className="song-header">
-                <h1>{lyrics[0]?.song_title || "Song Title"}</h1>
+                <h1>{songTitle || "Song Title"}</h1>
                 <button className="delete-button" onClick={handleDelete}>
                     Delete
                 </button>

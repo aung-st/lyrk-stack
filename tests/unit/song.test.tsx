@@ -27,7 +27,11 @@ beforeEach(() => {
     vi.fn().mockResolvedValue(undefined)
     globalThis.fetch = vi.fn(() =>
         Promise.resolve({
-            json: () => Promise.resolve({ songLyrics: mockLyrics }),
+            json: () =>
+                Promise.resolve({
+                    songLyrics: mockLyrics,
+                    song_title: "Tengir Azun",
+                }),
         } as Response),
     )
 })
@@ -49,6 +53,31 @@ describe("Song Page", () => {
         await waitFor(() => {
             expect(screen.getByText("Tengir Azun")).toBeInTheDocument()
         })
+    })
+
+    it("renders the real song title even when the song has no lyrics", async () => {
+        globalThis.fetch = vi.fn(() =>
+            Promise.resolve({
+                json: () =>
+                    Promise.resolve({
+                        songLyrics: [],
+                        song_title: "Tengir Azun",
+                    }),
+            } as Response),
+        )
+
+        render(
+            <MemoryRouter initialEntries={["/songs/1"]}>
+                <Routes>
+                    <Route path="/songs/:id" element={<Song />} />
+                </Routes>
+            </MemoryRouter>,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText("Tengir Azun")).toBeInTheDocument()
+        })
+        expect(screen.queryByText("Song Title")).not.toBeInTheDocument()
     })
 
     it("renders the placeholder title when no lyrics are fetched yet", async () => {
