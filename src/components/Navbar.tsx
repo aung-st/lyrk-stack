@@ -11,6 +11,11 @@ export default function Navbar() {
                         <FaMusic className="icon" />
                     </li>
                 </Link>
+                <Link to="/settings">
+                    <li className="navbar-item">
+                        <button>Settings</button>
+                    </li>
+                </Link>
                 <Link to="/about">
                     <li className="navbar-item">
                         <button>About</button>

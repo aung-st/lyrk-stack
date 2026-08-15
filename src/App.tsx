@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar.tsx"
 import Song from "./pages/Song.tsx"
 import AddSong from "./pages/AddSong.tsx"
 import Artist from "./pages/Artist.tsx"
+import Settings from "./pages/Settings.tsx"
 
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
                 <Route path="/songs" element={<Songs />} />
                 <Route path="/songs/:id" element={<Song />} />
                 <Route path="/add-song" element={<AddSong />} />
+                <Route path="/settings" element={<Settings />} />
                 <Route path="/artists/:id" element={<Artist />} />
             </Routes>
         </>
