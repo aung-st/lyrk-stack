@@ -12,16 +12,6 @@ body {
     text-align: center;
 }
 
-.search-container {
-    display: flex;
-    justify-content: center;
-    text-align: center;
-}
-
-.search-container li {
-    list-style-type: none;
-}
-
 .song-list {
     list-style-type: none;
     padding: 0;
