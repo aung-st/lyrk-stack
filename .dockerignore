@@ -7,3 +7,4 @@ blob-report
 .git
 .env
 *.db
+backups

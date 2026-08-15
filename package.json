@@ -16,6 +16,7 @@
         "up": "docker compose up",
         "test": "vitest run",
         "test:watch": "vitest",
+        "backup": "bash scripts/backup-db.sh",
         "server": "node api/server.ts"
     },
     "husky": {
