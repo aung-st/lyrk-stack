@@ -24,14 +24,44 @@ services:
             - PORT=5173
         ports:
             - "5173:5173"
+    # Dev service with HMR: bind-mounts host source. Do not run together with lyrk-stack-frontend (same port 5173).
+    lyrk-stack-frontend-dev:
+        restart: unless-stopped
+        networks:
+            - lyrk-stack-network
+        build:
+            dockerfile: ./docker/frontend-dev/dockerfile
+        volumes:
+            - ./src:/app/src
+            - ./index.html:/app/index.html
+            - ./vite.config.ts:/app/vite.config.ts
+            - ./tsconfig.json:/app/tsconfig.json
+            - ./tsconfig.app.json:/app/tsconfig.app.json
+            - ./tsconfig.node.json:/app/tsconfig.node.json
+            - /app/node_modules
+        environment:
+            - VITE_CLIENT_BASE_URL=${VITE_CLIENT_BASE_URL}
+            - VITE_SERVER_BASE_URL=${VITE_SERVER_BASE_URL}
+            - VITE_SONGS_URL=${VITE_SONGS_URL}
+            - VITE_SONG_LYRICS_URL=${VITE_SONG_LYRICS_URL}
+        ports:
+            - "5173:5173"
     lyrk-stack-backend:
+        restart: unless-stopped
         networks:
             - lyrk-stack-network
         build:
             dockerfile: ./docker/backend/dockerfile
         environment:
             - VITE_SERVER_BASE_URL=${VITE_SERVER_BASE_URL}
+            - VITE_CLIENT_BASE_URL=${VITE_CLIENT_BASE_URL}
+            - VITE_SONGS_URL=${VITE_SONGS_URL}
+            - VITE_SONG_LYRICS_URL=${VITE_SONG_LYRICS_URL}
+            - LYRK_DATA_DIR=/app/data
         ports:
             - "3001:3001"
         volumes:
-            - ./api/songbook.db:/app/api/songbook.db
+            - lyrk-data:/app/data
+
+volumes:
+    lyrk-data:
