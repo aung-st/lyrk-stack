@@ -25,7 +25,7 @@ async function openDatabase() {
 app.use(
     cors({
         origin: [baseURL],
-        methods: ["GET", "POST", "DELETE"],
+        methods: ["GET", "POST", "PATCH", "DELETE"],
     }),
 )
 
@@ -170,6 +170,63 @@ app.post(songsLyricsURL, async (req, res) => {
     }
 })
 
+app.patch(`${songsURL}/:song_id`, async (req, res) => {
+    const songId = req.params.song_id
+    const { song_title, artist_name } = req.body
+    try {
+        const db = await openDatabase()
+        const song = await db.get("SELECT * FROM songs WHERE song_id=?;", [songId])
+
+        if (!song) {
+            res.status(404).json({ error: "Song not found" })
+            return
+        }
+
+        if (
+            artist_name !== undefined &&
+            artist_name !== null &&
+            String(artist_name).trim() !== ""
+        ) {
+            const artist = await db.get(
+                "SELECT artist_id FROM artists WHERE artist_name=?;",
+                [artist_name],
+            )
+
+            let artistId: number
+            if (artist) {
+                artistId = artist.artist_id
+            } else {
+                const result = await db.run(
+                    "INSERT INTO artists (artist_name) VALUES (?);",
+                    [artist_name],
+                )
+                artistId = result.lastID!
+            }
+
+            await db.run("UPDATE songs SET artist_id=? WHERE song_id=?;", [
+                artistId,
+                songId,
+            ])
+        }
+
+        if (
+            song_title !== undefined &&
+            song_title !== null &&
+            String(song_title).trim() !== ""
+        ) {
+            await db.run("UPDATE songs SET song_title=? WHERE song_id=?;", [
+                song_title,
+                songId,
+            ])
+        }
+
+        res.status(200).json({ song_id: songId })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ error: "Failed to update song" })
+    }
+})
+
 app.delete(`${songsURL}/:song_id`, async (req, res) => {
     const songId = req.params.song_id
     try {
@@ -180,6 +237,36 @@ app.delete(`${songsURL}/:song_id`, async (req, res) => {
     } catch (error) {
         console.error(error)
         res.status(500).json({ error: "Failed to delete song" })
+    }
+})
+
+app.patch(`${songsLyricsURL}/:lyric_id`, async (req, res) => {
+    const lyricId = req.params.lyric_id
+    const { lyrics_text, is_translated } = req.body
+    try {
+        if (typeof lyrics_text !== "string" || lyrics_text.trim() === "") {
+            res.status(400).json({ error: "lyrics_text is required" })
+            return
+        }
+
+        const db = await openDatabase()
+        const lyric = await db.get("SELECT * FROM lyrics WHERE lyric_id=?;", [
+            lyricId,
+        ])
+
+        if (!lyric) {
+            res.status(404).json({ error: "Lyric not found" })
+            return
+        }
+
+        await db.run(
+            "UPDATE lyrics SET lyrics_text=?, is_translated=? WHERE lyric_id=?;",
+            [lyrics_text, is_translated ? 1 : 0, lyricId],
+        )
+        res.status(200).json({ lyric_id: lyricId })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ error: "Failed to update lyrics" })
     }
 })
 
