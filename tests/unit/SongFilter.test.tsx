@@ -1,3 +1,4 @@
+import { vi } from "vitest"
 import { render, screen, fireEvent } from "@testing-library/react"
 import type { ComponentProps } from "react"
 
@@ -109,5 +110,16 @@ describe("SongFilter", () => {
 
         expect(screen.getByText("No songs match your search.")).toBeInTheDocument()
         expect(screen.queryByText("Tengir Azun")).not.toBeInTheDocument()
+    })
+
+    it("calls onQueryChange with each query update", () => {
+        const onQueryChange = vi.fn()
+        renderFilter({ onQueryChange })
+
+        fireEvent.change(screen.getByLabelText(/Filter songs/i), {
+            target: { value: "sos" },
+        })
+
+        expect(onQueryChange).toHaveBeenCalledWith("sos")
     })
 })

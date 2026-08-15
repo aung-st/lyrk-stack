@@ -12,6 +12,7 @@ interface SongFilterProps {
     filter?: SongFilterPredicate
     showAllOnEmptyQuery?: boolean
     className?: string
+    onQueryChange?: (query: string) => void
     children: (filteredSongs: Song[]) => ReactNode
 }
 
@@ -31,6 +32,7 @@ function SongFilter({
     filter = matchesTitleOrArtist,
     showAllOnEmptyQuery = true,
     className,
+    onQueryChange,
     children,
 }: SongFilterProps) {
     const [query, setQuery] = useState("")
@@ -51,7 +53,10 @@ function SongFilter({
                     id={id}
                     type="text"
                     value={query}
-                    onChange={(e) => setQuery(e.target.value)}
+                    onChange={(e) => {
+                        setQuery(e.target.value)
+                        onQueryChange?.(e.target.value)
+                    }}
                     placeholder={placeholder}
                 />
             </div>

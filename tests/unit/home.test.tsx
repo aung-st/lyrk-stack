@@ -161,4 +161,126 @@ describe("Home Page", () => {
             expect(screen.getByText("Altai Kai")).toBeInTheDocument()
         })
     })
+
+    it("does not show an error when the initial load fails", async () => {
+        globalThis.fetch = vi.fn(() => Promise.reject(new Error("Failed to fetch")))
+
+        render(
+            <MemoryRouter>
+                <Home />
+            </MemoryRouter>,
+        )
+
+        await waitFor(() => {
+            expect(globalThis.fetch).toHaveBeenCalled()
+        })
+
+        expect(screen.queryByText("Failed to fetch")).not.toBeInTheDocument()
+    })
+
+    it("shows an error when a search refetch fails", async () => {
+        globalThis.fetch = vi
+            .fn()
+            .mockResolvedValueOnce({
+                json: () => Promise.resolve({ songs: mockSongs }),
+            } as Response)
+            .mockRejectedValueOnce(new Error("Failed to fetch"))
+
+        render(
+            <MemoryRouter>
+                <Home />
+            </MemoryRouter>,
+        )
+
+        await waitFor(() => {
+            expect(globalThis.fetch).toHaveBeenCalledTimes(1)
+        })
+
+        const input = screen.getByRole("textbox")
+        fireEvent.change(input, { target: { value: "T" } })
+
+        await waitFor(() => {
+            expect(screen.getByText("Failed to fetch")).toBeInTheDocument()
+        })
+    })
+
+    it("shows a fallback error message when a search refetch fails", async () => {
+        globalThis.fetch = vi
+            .fn()
+            .mockResolvedValueOnce({
+                json: () => Promise.resolve({ songs: mockSongs }),
+            } as Response)
+            .mockRejectedValueOnce("boom")
+
+        render(
+            <MemoryRouter>
+                <Home />
+            </MemoryRouter>,
+        )
+
+        await waitFor(() => {
+            expect(globalThis.fetch).toHaveBeenCalledTimes(1)
+        })
+
+        const input = screen.getByRole("textbox")
+        fireEvent.change(input, { target: { value: "T" } })
+
+        await waitFor(() => {
+            expect(screen.getByText("Something went wrong")).toBeInTheDocument()
+        })
+    })
+
+    it("refetches songs when the query changes", async () => {
+        render(
+            <MemoryRouter>
+                <Home />
+            </MemoryRouter>,
+        )
+
+        await waitFor(() => {
+            expect(globalThis.fetch).toHaveBeenCalledTimes(1)
+        })
+
+        const input = screen.getByRole("textbox")
+        fireEvent.change(input, { target: { value: "T" } })
+
+        await waitFor(() => {
+            expect(globalThis.fetch).toHaveBeenCalledTimes(2)
+        })
+    })
+
+    it("clears the error when a search refetch succeeds after a failed one", async () => {
+        globalThis.fetch = vi
+            .fn()
+            .mockResolvedValueOnce({
+                json: () => Promise.resolve({ songs: mockSongs }),
+            } as Response)
+            .mockRejectedValueOnce(new Error("Failed to fetch"))
+            .mockResolvedValueOnce({
+                json: () => Promise.resolve({ songs: mockSongs }),
+            } as Response)
+
+        render(
+            <MemoryRouter>
+                <Home />
+            </MemoryRouter>,
+        )
+
+        await waitFor(() => {
+            expect(globalThis.fetch).toHaveBeenCalledTimes(1)
+        })
+
+        const input = screen.getByRole("textbox")
+        fireEvent.change(input, { target: { value: "T" } })
+
+        await waitFor(() => {
+            expect(screen.getByText("Failed to fetch")).toBeInTheDocument()
+        })
+
+        fireEvent.change(input, { target: { value: "Te" } })
+
+        await waitFor(() => {
+            expect(screen.queryByText("Failed to fetch")).not.toBeInTheDocument()
+        })
+    })
 })
