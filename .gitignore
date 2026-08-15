@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 *.db
+*.db_backup
 .env
 
 # Editor directories and files
