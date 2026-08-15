@@ -48,9 +48,7 @@ export async function addSong(payload: {
     return response.json()
 }
 
-export async function getSongsByArtist(
-    artistId: number,
-): Promise<{
+export async function getSongsByArtist(artistId: number): Promise<{
     artist_name: string
     songs: { song_id: number; song_title: string }[]
 }> {
