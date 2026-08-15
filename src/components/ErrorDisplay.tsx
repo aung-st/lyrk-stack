@@ -1,11 +1,16 @@
 import "../styles/ErrorDisplay.css"
 
 interface ErrorDisplayProps {
-    message: string
+    error: Error | string
 }
 
-function ErrorDisplay({ message }: ErrorDisplayProps) {
-    return <div className="error-message">{message}</div>
+function toMessage(error: Error | string): string {
+    if (error instanceof Error) return error.message
+    return error || "Something went wrong"
+}
+
+function ErrorDisplay({ error }: ErrorDisplayProps) {
+    return <div className="error-message">{toMessage(error)}</div>
 }
 
 export default ErrorDisplay
