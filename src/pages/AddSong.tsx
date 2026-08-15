@@ -2,6 +2,8 @@ import "../styles/AddSong.css"
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
+import { getSongs, addSong, addSongLyrics } from "../utils/songService.ts"
+
 function AddSong() {
     const navigate = useNavigate()
     const [songTitle, setSongTitle] = useState("")
@@ -17,11 +19,7 @@ function AddSong() {
     useEffect(() => {
         const fetchSongs = async () => {
             try {
-                const baseUrl = import.meta.env.VITE_SERVER_BASE_URL
-                const songsUrl = import.meta.env.VITE_SONGS_URL
-                const response = await fetch(`${baseUrl}${songsUrl}`)
-                const data = await response.json()
-                setSongs(data.songs)
+                setSongs(await getSongs())
             } catch (err) {
                 console.error("Error fetching songs:", err)
             }
@@ -35,27 +33,13 @@ function AddSong() {
         setError("")
 
         try {
-            const baseUrl = import.meta.env.VITE_SERVER_BASE_URL
-            const songsUrl = import.meta.env.VITE_SONGS_URL
-            const lyricsUrl = import.meta.env.VITE_SONG_LYRICS_URL
-
             let songId = selectedSongId
 
             if (mode === "new") {
-                const songResponse = await fetch(`${baseUrl}${songsUrl}`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        song_title: songTitle,
-                        artist_name: artistName,
-                    }),
+                const songData = await addSong({
+                    song_title: songTitle,
+                    artist_name: artistName,
                 })
-
-                if (!songResponse.ok) {
-                    throw new Error("Failed to add song")
-                }
-
-                const songData = await songResponse.json()
                 songId = songData.song_id
             }
 
@@ -63,20 +47,12 @@ function AddSong() {
                 throw new Error("No song selected")
             }
 
-            const lyricsResponse = await fetch(`${baseUrl}${lyricsUrl}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    song_id: songId,
-                    language,
-                    lyrics_text: lyricsText,
-                    is_translated: isTranslated,
-                }),
+            await addSongLyrics({
+                song_id: songId,
+                language,
+                lyrics_text: lyricsText,
+                is_translated: isTranslated,
             })
-
-            if (!lyricsResponse.ok) {
-                throw new Error("Failed to add lyrics")
-            }
 
             navigate(`/songs/${songId}`)
         } catch (err) {

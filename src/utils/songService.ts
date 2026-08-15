@@ -8,10 +8,12 @@ export async function getSongs(): Promise<Song[]> {
     return data.songs
 }
 
-export async function getSongLyrics(songId: number): Promise<LyricsBySong[]> {
+export async function getSongLyrics(
+    songId: number,
+): Promise<{ songLyrics: LyricsBySong[]; song_title: string | null }> {
     const response = await fetch(`${baseUrl}${songLyricsUrl}/${songId}`)
     const data = await response.json()
-    return data.songLyrics
+    return data
 }
 
 export async function updateSong(
@@ -27,6 +29,34 @@ export async function updateSong(
     if (!response.ok) {
         throw new Error("Failed to update song")
     }
+}
+
+export async function addSong(payload: {
+    song_title: string
+    artist_name: string
+}): Promise<{ song_id: number }> {
+    const response = await fetch(`${baseUrl}${songsUrl}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+    })
+
+    if (!response.ok) {
+        throw new Error("Failed to add song")
+    }
+
+    return response.json()
+}
+
+export async function getSongsByArtist(
+    artistId: number,
+): Promise<{
+    artist_name: string
+    songs: { song_id: number; song_title: string }[]
+}> {
+    const response = await fetch(`${baseUrl}${songsUrl}/artist/${artistId}`)
+    const data = await response.json()
+    return data
 }
 
 export async function addSongLyrics(payload: {

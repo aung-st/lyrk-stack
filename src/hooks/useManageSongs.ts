@@ -50,7 +50,7 @@ export function useManageSongs(): UseSongManagerResult {
     const fetchLyrics = useCallback(async (songId: number) => {
         const fetchId = ++lyricsFetchId.current
         try {
-            const songLyrics = await getSongLyrics(songId)
+            const { songLyrics } = await getSongLyrics(songId)
             if (fetchId === lyricsFetchId.current) {
                 setLyrics(songLyrics)
             }

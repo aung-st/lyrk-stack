@@ -1,6 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom"
 import { useState, useEffect } from "react"
+
 import "../styles/Song.css"
+import { getSongLyrics, deleteSong } from "../utils/songService.ts"
 
 function Song() {
     const { id } = useParams()
@@ -15,12 +17,9 @@ function Song() {
     useEffect(() => {
         const fetchSongLyricsData = async () => {
             try {
-                const baseUrl = import.meta.env.VITE_SERVER_BASE_URL
-                const lyricsUrl = import.meta.env.VITE_SONG_LYRICS_URL
-                const response = await fetch(`${baseUrl}${lyricsUrl}/${songId}`)
-                const data = await response.json()
-                setLyrics(data.songLyrics ?? [])
-                setSongTitle(data.song_title ?? "")
+                const { songLyrics, song_title } = await getSongLyrics(songId)
+                setLyrics(songLyrics ?? [])
+                setSongTitle(song_title ?? "")
             } catch (error) {
                 console.error("Error fetching lyrics:", error)
             }
@@ -42,11 +41,7 @@ function Song() {
         if (!window.confirm("Delete this song and all its lyrics?")) return
 
         try {
-            const baseUrl = import.meta.env.VITE_SERVER_BASE_URL
-            const songsUrl = import.meta.env.VITE_SONGS_URL
-            await fetch(`${baseUrl}${songsUrl}/${songId}`, {
-                method: "DELETE",
-            })
+            await deleteSong(songId)
             navigate("/songs")
         } catch (error) {
             console.error("Error deleting song:", error)

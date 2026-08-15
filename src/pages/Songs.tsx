@@ -2,17 +2,15 @@ import "../styles/Songs.css"
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 
+import { getSongs } from "../utils/songService.ts"
+
 function Songs() {
     const [songs, setSongs] = useState<Song[]>([])
 
     useEffect(() => {
         const fetchSongCollectionData = async () => {
             try {
-                const baseUrl = import.meta.env.VITE_SERVER_BASE_URL
-                const songsUrl = import.meta.env.VITE_SONGS_URL
-                const response = await fetch(`${baseUrl}${songsUrl}`)
-                const data = await response.json()
-                setSongs(data.songs)
+                setSongs(await getSongs())
             } catch (error) {
                 console.error("Error fetching songs:", error)
             }

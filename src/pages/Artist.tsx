@@ -2,23 +2,17 @@ import "../styles/Artist.css"
 import { useState, useEffect } from "react"
 import { useParams, Link } from "react-router-dom"
 
-interface ArtistSong {
-    song_id: number
-    song_title: string
-}
+import { getSongsByArtist } from "../utils/songService.ts"
 
 function Artist() {
     const { id } = useParams()
     const [artistName, setArtistName] = useState("")
-    const [songs, setSongs] = useState<ArtistSong[]>([])
+    const [songs, setSongs] = useState<{ song_id: number; song_title: string }[]>([])
 
     useEffect(() => {
         const fetchArtistData = async () => {
             try {
-                const baseUrl = import.meta.env.VITE_SERVER_BASE_URL
-                const songsUrl = import.meta.env.VITE_SONGS_URL
-                const response = await fetch(`${baseUrl}${songsUrl}/artist/${id}`)
-                const data = await response.json()
+                const data = await getSongsByArtist(Number(id))
                 setArtistName(data.artist_name)
                 setSongs(data.songs)
             } catch (error) {
