@@ -1,10 +1,11 @@
 import "../styles/About.css"
 import { Link } from "react-router-dom"
 
+import { getExportUrl } from "../utils/songService.ts"
+
 function About() {
     const handleExport = () => {
-        const baseUrl = import.meta.env.VITE_SERVER_BASE_URL
-        window.open(`${baseUrl}/api/export`, "_blank")
+        window.open(getExportUrl(), "_blank")
     }
 
     return (
