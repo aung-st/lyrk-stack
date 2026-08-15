@@ -4,7 +4,15 @@ const songLyricsUrl = import.meta.env.VITE_SONG_LYRICS_URL
 
 export async function getSongs(): Promise<Song[]> {
     const response = await fetch(`${baseUrl}${songsUrl}`)
-    const data = await response.json()
+    const data = (await response.json()) as {
+        songs: Song[]
+        error?: string
+    }
+
+    if (!response.ok) {
+        throw new Error(data.error ?? "Failed to fetch songs")
+    }
+
     return data.songs
 }
 
@@ -12,7 +20,16 @@ export async function getSongLyrics(
     songId: number,
 ): Promise<{ songLyrics: LyricsBySong[]; song_title: string | null }> {
     const response = await fetch(`${baseUrl}${songLyricsUrl}/${songId}`)
-    const data = await response.json()
+    const data = (await response.json()) as {
+        songLyrics: LyricsBySong[]
+        song_title: string | null
+        error?: string
+    }
+
+    if (!response.ok) {
+        throw new Error(data.error ?? "Failed to fetch lyrics")
+    }
+
     return data
 }
 
@@ -53,7 +70,16 @@ export async function getSongsByArtist(artistId: number): Promise<{
     songs: { song_id: number; song_title: string }[]
 }> {
     const response = await fetch(`${baseUrl}${songsUrl}/artist/${artistId}`)
-    const data = await response.json()
+    const data = (await response.json()) as {
+        artist_name: string
+        songs: { song_id: number; song_title: string }[]
+        error?: string
+    }
+
+    if (!response.ok) {
+        throw new Error(data.error ?? "Failed to fetch artist")
+    }
+
     return data
 }
 

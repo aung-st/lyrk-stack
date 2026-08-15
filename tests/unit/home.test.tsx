@@ -17,6 +17,7 @@ const mockSongs = [
 beforeEach(() => {
     globalThis.fetch = vi.fn(() =>
         Promise.resolve({
+            ok: true,
             json: () => Promise.resolve({ songs: mockSongs }),
         } as Response),
     )
@@ -182,6 +183,7 @@ describe("Home Page", () => {
         globalThis.fetch = vi
             .fn()
             .mockResolvedValueOnce({
+                ok: true,
                 json: () => Promise.resolve({ songs: mockSongs }),
             } as Response)
             .mockRejectedValueOnce(new Error("Failed to fetch"))
@@ -208,6 +210,7 @@ describe("Home Page", () => {
         globalThis.fetch = vi
             .fn()
             .mockResolvedValueOnce({
+                ok: true,
                 json: () => Promise.resolve({ songs: mockSongs }),
             } as Response)
             .mockRejectedValueOnce("boom")
@@ -253,10 +256,12 @@ describe("Home Page", () => {
         globalThis.fetch = vi
             .fn()
             .mockResolvedValueOnce({
+                ok: true,
                 json: () => Promise.resolve({ songs: mockSongs }),
             } as Response)
             .mockRejectedValueOnce(new Error("Failed to fetch"))
             .mockResolvedValueOnce({
+                ok: true,
                 json: () => Promise.resolve({ songs: mockSongs }),
             } as Response)
 

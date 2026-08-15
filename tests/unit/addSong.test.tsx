@@ -7,6 +7,7 @@ import AddSong from "../../src/pages/AddSong"
 beforeEach(() => {
     globalThis.fetch = vi.fn(() =>
         Promise.resolve({
+            ok: true,
             json: () => Promise.resolve({ songs: [] }),
         } as Response),
     )

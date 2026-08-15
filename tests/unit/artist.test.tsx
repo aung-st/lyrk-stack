@@ -15,6 +15,7 @@ const mockArtistData = {
 beforeEach(() => {
     globalThis.fetch = vi.fn(() =>
         Promise.resolve({
+            ok: true,
             json: () => Promise.resolve(mockArtistData),
         } as Response),
     )
@@ -93,6 +94,30 @@ describe("Artist Page", () => {
 
         await waitFor(() => {
             expect(globalThis.fetch).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    it("renders the error message when the artist is not found", async () => {
+        globalThis.fetch = vi.fn(() =>
+            Promise.resolve({
+                ok: false,
+                json: () =>
+                    Promise.resolve({
+                        error: "Artist not found",
+                    }),
+            } as Response),
+        )
+
+        render(
+            <MemoryRouter initialEntries={["/artists/999"]}>
+                <Routes>
+                    <Route path="/artists/:id" element={<Artist />} />
+                </Routes>
+            </MemoryRouter>,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText("Artist not found")).toBeInTheDocument()
         })
     })
 })

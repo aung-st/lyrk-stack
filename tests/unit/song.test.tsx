@@ -1,5 +1,5 @@
 import { vi } from "vitest"
-import { render, screen, waitFor } from "@testing-library/react"
+import { render, screen, fireEvent, waitFor } from "@testing-library/react"
 import { MemoryRouter, Routes, Route } from "react-router-dom"
 
 import Song from "../../src/pages/Song"
@@ -27,6 +27,7 @@ beforeEach(() => {
     vi.fn().mockResolvedValue(undefined)
     globalThis.fetch = vi.fn(() =>
         Promise.resolve({
+            ok: true,
             json: () =>
                 Promise.resolve({
                     songLyrics: mockLyrics,
@@ -58,6 +59,7 @@ describe("Song Page", () => {
     it("renders the real song title even when the song has no lyrics", async () => {
         globalThis.fetch = vi.fn(() =>
             Promise.resolve({
+                ok: true,
                 json: () =>
                     Promise.resolve({
                         songLyrics: [],
@@ -155,6 +157,67 @@ describe("Song Page", () => {
 
         await waitFor(() => {
             expect(globalThis.fetch).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    it("renders the error message when the song is not found", async () => {
+        globalThis.fetch = vi.fn(() =>
+            Promise.resolve({
+                ok: false,
+                json: () =>
+                    Promise.resolve({
+                        error: "Song not found",
+                    }),
+            } as Response),
+        )
+
+        render(
+            <MemoryRouter initialEntries={["/songs/999"]}>
+                <Routes>
+                    <Route path="/songs/:id" element={<Song />} />
+                </Routes>
+            </MemoryRouter>,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText("Song not found")).toBeInTheDocument()
+        })
+    })
+
+    it("renders an error message when deleting a song fails", async () => {
+        vi.spyOn(window, "confirm").mockReturnValue(true)
+        globalThis.fetch = vi.fn((_input: RequestInfo | URL, init?: RequestInit) => {
+            if (init?.method === "DELETE") {
+                return Promise.reject(new Error("Failed to delete song"))
+            }
+            return Promise.resolve({
+                ok: true,
+                json: () =>
+                    Promise.resolve({
+                        songLyrics: mockLyrics,
+                        song_title: "Tengir Azun",
+                    }),
+            } as Response)
+        })
+
+        render(
+            <MemoryRouter initialEntries={["/songs/1"]}>
+                <Routes>
+                    <Route path="/songs/:id" element={<Song />} />
+                </Routes>
+            </MemoryRouter>,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole("button", { name: /Delete/i }),
+            ).toBeInTheDocument()
+        })
+
+        fireEvent.click(screen.getByRole("button", { name: /Delete/i }))
+
+        await waitFor(() => {
+            expect(screen.getByText("Failed to delete song")).toBeInTheDocument()
         })
     })
 })
