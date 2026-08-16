@@ -19,6 +19,11 @@ export default defineConfig({
         environment: "jsdom",
         setupFiles: "./vitest.setup.ts",
         css: true,
+        env: {
+            VITE_SERVER_BASE_URL: "http://localhost:3001",
+            VITE_SONGS_URL: "/api/data/songs",
+            VITE_SONG_LYRICS_URL: "/api/data/songLyrics",
+        },
         exclude: ["tests/e2e/**", "node_modules"],
         coverage: {
             provider: "v8",
